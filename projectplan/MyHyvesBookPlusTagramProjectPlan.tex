@@ -1,0 +1,170 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LATEX-TEMPLATE PROJECTPLAN
+%-------------------------------------------------------------------------------
+% Voor informatie over het projectplan, zie
+% http://practicumav.nl/project/projectplan.html
+% Voor readme en meest recente versie van het template, zie
+% https://gitlab-fnwi.uva.nl/informatica/LaTeX-template.git
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------
+%	PACKAGES EN DOCUMENT CONFIGURATIE
+%-------------------------------------------------------------------------------
+
+\documentclass{uva-inf-article}
+\usepackage[dutch]{babel}
+
+%-------------------------------------------------------------------------------
+%	GEGEVENS VOOR IN DE TITEL
+%-------------------------------------------------------------------------------
+
+% Vul de naam van de opdracht in.
+\assignment{The Return of the MyHyvesBook+}
+% Vul het soort opdracht in.
+\assignmenttype{Projectplan}
+% Vul de titel van de eindopdracht in.
+\title{MyHyvesBookPlusTagram Wordt H\'et Nieuwe Multimedia Platform}
+
+% Vul de volledige namen van alle auteurs in.
+\authors{Marijn Jansen; Felix Atsma; Paul Lagerweij; Niels Zwemmer}
+% Vul de corresponderende UvAnetID's in.
+\uvanetids{11166932; 11035064; 11306084; 11025980}
+
+% Vul altijd de naam in van diegene die het nakijkt, tutor of docent.
+\tutor{Robin Klusman}
+% Vul eventueel ook de naam van de docent of vakcoordinator toe.
+\docent{drs. A. van Inge}
+% Vul hier de naam van de PAV-groep  in.
+\group{C1 (C++)}
+% Vul de naam van de cursus in.
+\course{Multimedia}
+% Te vinden op onder andere Datanose.
+\courseid{5062MULT6Y}
+
+% Dit is de datum die op het document komt te staan. Standaard is dat vandaag.
+\date{\today}
+
+%-------------------------------------------------------------------------------
+%	VOORPAGINA
+%-------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+
+%-------------------------------------------------------------------------------
+%	INHOUDSOPGAVE
+%-------------------------------------------------------------------------------
+
+\tableofcontents
+
+%-------------------------------------------------------------------------------
+%	ACHTERGROND
+%-------------------------------------------------------------------------------
+
+\section{Achtergrond}
+Wij zijn benaderd door MyHyvesBook+; een softwaregigant binnen de social media. Zij willen hun doelgroep van jongeren beter bereiken door aan de naam \textit{MyHyvesBook+} naast de reeds succesvolle website, ook een android app toe te voegen. De implementatievoorwaarden zijn eenvoudig: er moet duidelijk sprake zijn van multimedia-integratie doormiddel van foto's en/of geluid.
+Wij hebben inspiratie gehaald uit een minder multimedia platform dat reeds bestaat en willen dit naar onze eigen hand implementeren om een extra dimensie toe te voegen aan MyHyvesBook+. De app zal dan ook heten: \textit{MyHyvesBookPlusTagram}.
+
+%-------------------------------------------------------------------------------
+%	DOELEN
+%-------------------------------------------------------------------------------
+
+\section{Projectdoelstelling}
+Onze doelstelling is het verzorgen van een prettige, nieuwe ervaring voor de leden van MyHyvesBook+. De doelgroep van jongeren is van groot belang voor de success van dit project, omdat vrijwel alle jongeren een smartphone bezitten. Momenteel heeft MyHyvesBook+ nog onvoldoende mogelijkheden voor de smartphonegebruiker toegevoegd. Dat zal moeten veranderen met deze app. Modernisering is het sleutelwoord bij dit project.
+
+\subsection{Doelstellling}
+Het doel is gehoor te geven aan de vraag van de gebruiker en \textit{H\'et Nieuwe Multimedia Platform} op te stellen. Dit zal gedaan worden in de vorm van een gratis te verkrijgen android applicatie die gebruik maakt van foto's om een publiekelijke feed te cre\"eeren; transparant maar veilig. Conform de kernide\"een die MyHyvesBook+ hanteert en garandeerd.
+
+\subsection{Visie}
+Onze visie is het simpel en snel weergeven van afbeeldingen waarop de welbekende \textit{niet-slecht's} kunnen worden gegeven. Uiteraard ondersteunt de app het direct uploaden van en filters toevoegen aan foto's.
+
+%-------------------------------------------------------------------------------
+%	RESULTAAT
+%-------------------------------------------------------------------------------
+
+\section{Projectresultaat}
+De kenmerken van de app zijn eenvoud en snelheid. Dit zal worden bereikt door zoveel mogelijk modulariteit te gebruiken. Zo zal de backend worden verzorgd door \textit{Firebase}; een mobiel -en webapplicatie ontwikkelingsplatform wat de ontwikkeling van professionele apps vereenvoudigd en versnelt. Hier is voor gekozen om cross-platform compatibiliteit voor nu en de toekomst te bevorderen en om de snelheidswinst die ermee kan worden behaald, gezien de strakke planning en de naderende deadline. De verwachte \textit{releasedate} van de app is 27 juni 2017.
+Naast Firebase zal gebruik worden gemaakt van de diverse reeds beschikbare API's om maximale prestaties en eenvoud te garanderen. Denk hierbij aan API's voor het opslaan van afbeeldingen in een online database, het toepassen van filters op afbeeldingen etc. 
+\linebreak
+\\
+Alvorens deze beslissingen zijn gemaakt, is overleg geweest met zowel het bestuur bij MyHyvesBook+ als onderling binnen onze groep.
+
+%-------------------------------------------------------------------------------
+%	ORGANISATIE
+%-------------------------------------------------------------------------------
+
+\section{Projectorganisatie}
+Hieronder staat de rolverdeling waaraan wij ons gaan houden. Deze rolverdeling is opgesteld aan de hand van het 4W-model: Wie, wat, Waarom, Wanneer.
+
+\subsection{Rollen}
+\textbf{Projectmanager en gitmaster}
+\begin{itemize}
+\item Wie: Marijn
+\item Wat: Het leiden van het team naar succes. Belangrijk is hierbij dat de beslissingen over onderdelen van de app samen met de eindverantwoordelijke van dat onderdeel worden genomen. Mocht dit leiden tot een impasse, kan de voorzitter worden ingeschakelt om te stemmen. Ook zal Marijn zorgen dat de git repo overzichtelijk blijft en wordt hij het aanspreekpunt bij problemen.
+\item Waarom: Om te zorgen voor een goede samenwerking en sfeer, productiviteit bevordering en een stabiele version-control.
+\item Wanneer: Tijdens het gehele project, wanneer niet aanwezig op de UvA vrijwel altijd beschikbaar via telefoon.
+\end{itemize}
+\textbf{Notulist en Voorzitter}
+\begin{itemize}
+\item Wie: Niels
+\item Wat: Vaart houden in de vergaderingen en nauw samenwerken met de projectmanager om te zorgen dat beslissingen worden genomen binnen tijdsbestek. Daarnaast worden notules gemaakt van de vergaderingen.
+\item Waarom: Zodat de vergaderingen soepel en snel verlopen en belangrijke beslissingen niet te lang op zich laten wachten. Ook kunnen de notules worden gebruikt tijdens de individuele verslagen.
+\item Wanneer: Tijdens vergaderingen en vlak erna voor het afronden van de notulen.
+\end{itemize}
+\textbf{Design}
+\begin{itemize}
+\item Wie: Felix
+\item Wat: De eindbeslissingen nemen met betrekking tot design van zowel de poster als de app. Kan taken delegeren onder de overige leden maar houdt het nauwgezet in de gaten. Wordt gezien als de all-round werker die ook taken op zich kan nemen anders dan design. Essentieel dat er goed overleg plaatsvindt zodat de wensen van zowel de groep als opdrachtgever in acht worden genomen.
+\item Waarom: Zodat het eindplaatje presenteerbaar is.
+\item Wanneer: Gedurende het gehele project.
+\end{itemize}
+\textbf{Backend}
+\begin{itemize}
+\item Wie: Paul
+\item Wat: Het bijhouden en consistent houden van alle code die wordt geschreven zoals algoritmes, database bijhouden en de uiteindelijke beslissingen nemen over Firebase. Tijdens vergaderingen telt Paul's stem strenger over beslissingen met betrekking tot deze punten dan die van anderen.
+\item Waarom: Dit moet gebeuren om inconsistenties en niet-modulariteit tegen te gaan. Daarnaast moet de code duidelijk en begrijpelijk blijven om maximale productiviteit te stimuleren.
+\item Wanneer: Continue tijdens het project; blijvend proces.
+\end{itemize}
+
+\subsection{Communicatie}
+Het team vergadert in principe twee keer per week; eenmaal op de maandag en eenmaal op de vrijdag. Dit resulteert in vier vergaderingen. Deze vergaderingen zullen zijn van 11:00 tot 12:00 onder voorbehoud dat iedereen aanwezig kan zijn (dan wel fysiek, dan wel over Skype/andere dienst).
+Mocht een vergadering verplaatst worden, dan wordt dit tijdig aangegeven: minimaal 24 uur van tevoren tenzij er een geldige reden wordt opgegeven.
+Afmelden voor vergaderingen wordt gedaan bij de voorzitter met opgave van de (globale) reden tot verzuim. Wederom 24 uur van tevoren, tenzij dit niet mogelijk is.\\\\
+\noindent
+Naast de vergaderingen zal er gebruik worden gemaakt van media zoals WhatsApp en Skype om te communiceren. Voor version-control zal git worden gebruikt en bijgehouden door de git-master.
+
+\subsection{Verantwoording van geleverd werk}
+De individuele bijdragen worden bepaald doordat de voorzitter tijdens de vergaderingen bijhoudt of alles volgens schema verloopt. Tijdens de eerste offici\"ele vergadering van het project op 19 juni 2017 zal een kort schema opgesteld worden met interne deadlines per onderdeel per persoon. Deze deadlines zijn geen harde deadlines maar meer een streefpunt. Zolang hier niet te ver van wordt afgeweken, zal het project in goede banen verlopen. De voorzitter houdt de progressie bij van alle leden en zij zullen dan ook melden als zij een bepaald onderdeel lang niet af gaan redden. Mocht dit het geval zijn, legt de voorzitter dit probleem voor bij de projectleider. Deze kan dan besluiten een spoedvergadering op te zetten bij een lastig probleem of kan besluiten het probleem direct op te lossen bij kleinere problemen.
+Dit schema inclusief de (zachte) deadlines zal worden gepubliceerd op Trello
+voor maximale transparantie en overzicht. Hierdoor kunnen leden dan ook bij het voltooien van een taak, eenvoudig aangeven dat deze taak voltooid is.
+
+\subsection{Werkafspaken}
+Bovenstaande subsecties bevatten al een en ander van de werkafspraken, maar hieronder volgt nog een uiteindelijke samenvatting:
+
+\begin{enumerate}
+\item Verantwoordelijkheid ligt bij elk lid van de groep per onderdeel apart.
+Bij problemen is het ook die persoon zijn verantwoordelijkheid hier op tijd melding van te maken.
+\item Vergaderingen hebben een vaste starttijd en daar dient zo min mogelijk van afgeweken te worden. Ieder lid wordt geacht aanwezig te zijn en bij te dragen aan het gesprek in enkele zin.
+\item De verschillende eindverantwoordelijken maken belangrijke beslissingen in principe alleen in overleg met de projectleider, tenzij hier een impasse ontstaat. In dat geval zal er worden gestemd met een zwaarder wegende stem voor de eindverantwoordelijke.
+\item Transparantie en openheid staan centraal bij onze groep. Dit betekent dat er tijdig wordt aangegeven als iets niet goed gaat (met de opdracht of tussen groepsleden) en deze feedback wordt serieus in overweging genomen. Er is onvoldoende tijd om rechtertje te spelen, dus er wordt maximale inzet en medewerking verwacht van alle leden.
+\item Tijdens vergaderingen zullen notules worden gemaakt en op gitlab worden gepubliceerd zodat deze gemakkelijk terug te vinden zijn. Hierin staan de besproken onderwerpen en beslissingen, en de positieve en negatieve punten die naar voren zijn gekomen.
+\item Zachte deadlines worden zoveel mogelijk nageleefd en anders snel ingehaald. Tijd is niet aan onze kant en dus zal er hard gewerkt moeten worden om van MyHyvesBookPlusTagram het grote succes te maken dat het zeker verdient te zijn!
+\end{enumerate}
+
+%-------------------------------------------------------------------------------
+%	PLANNING
+%-------------------------------------------------------------------------------
+
+%Zet de planning indien gewenst in een apart document
+
+
+
+%-------------------------------------------------------------------------------
+%	BIJLAGEN EN EINDE
+%-------------------------------------------------------------------------------
+
+%\section{Bijlage A}
+%\section{Bijlage B}
+%\section{Bijlage C}
+
+\end{document}
