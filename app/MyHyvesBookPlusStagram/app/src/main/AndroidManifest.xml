@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nl.myhyvesbookplus.stagram">
+    package="nl.myhyvesbookplus.tagram">
 
     <application
         android:allowBackup="true"
@@ -10,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="nl.myhyvesbookplus.tagram.MainActivity"
             android:label="@string/app_name">
+
+        </activity>
+        <activity android:name="nl.myhyvesbookplus.tagram.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package nl.myhyvesbookplus.stagram;
+package nl.myhyvesbookplus.tagram;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,14 +20,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_home:
+                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_dashboard:
+                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_dashboard);
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_notifications:
+                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_notifications);
                     return true;
             }
             return false;
@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(nl.myhyvesbookplus.tagram.R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mTextMessage = (TextView) findViewById(nl.myhyvesbookplus.tagram.R.id.message);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(nl.myhyvesbookplus.tagram.R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
