@@ -1,18 +1,23 @@
 package nl.myhyvesbookplus.tagram;
 
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener {
+    final static private String TAG = "MainScreen";
 
-    private TextView mTextMessage;
+    FirebaseAuth mAuth;
+    CameraFragment cameraFragment;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -20,14 +25,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case nl.myhyvesbookplus.tagram.R.id.navigation_home:
-                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_home);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_timeline:
                     return true;
-                case nl.myhyvesbookplus.tagram.R.id.navigation_dashboard:
-                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_dashboard);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_camera:
                     return true;
-                case nl.myhyvesbookplus.tagram.R.id.navigation_notifications:
-                    mTextMessage.setText(nl.myhyvesbookplus.tagram.R.string.title_notifications);
+                case nl.myhyvesbookplus.tagram.R.id.navigation_profile:
                     return true;
             }
             return false;
@@ -40,13 +42,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(nl.myhyvesbookplus.tagram.R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(nl.myhyvesbookplus.tagram.R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(nl.myhyvesbookplus.tagram.R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
-//        ref.setValue("Hello, Wold!");
-        ref.child("Messages").child("child?").setValue("Hallo!");
+
+        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+            goToLogin();
+        }
+
     }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    public void logOutOnClick(View view) {
+        FirebaseAuth.getInstance().signOut();
+        goToLogin();
+        this.finish();
+    }
+
+    protected void goToLogin() {
+        Intent goToLogIn = new Intent(this, LoginActivity.class);
+        startActivity(goToLogIn);
+    }
 }

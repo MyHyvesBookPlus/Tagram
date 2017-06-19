@@ -40,6 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         findViews();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    /**
+     * Assigns all views.
+     */
     protected void findViews() {
         passwordConfirmLabel = (TextView) findViewById(R.id.confirm_password_label);
         usernameLabel = (TextView) findViewById(R.id.username_label);
@@ -57,14 +65,22 @@ public class LoginActivity extends AppCompatActivity {
 
     /// OnClick ///
 
+    /**
+     * Performs the logon action.
+     *
+     * @param view
+     */
     public void logInOnClick(View view) {
-        mAuth.signOut(); // TODO: Remove this after login check is implemented.
         String emailSting = emailField.getText().toString();
         String passwordSting = passwordField.getText().toString();
 
         logIn(emailSting, passwordSting);
     }
 
+    /**
+     * Performs the register action.
+     * @param view
+     */
     public void registerOnClick(View view) {
         Log.d(TAG, "registerOnClick: ");
 
@@ -80,6 +96,10 @@ public class LoginActivity extends AppCompatActivity {
 
     /// UI-changes ///
 
+    /**
+     * Changes the Activity for registering.
+     * @param view
+     */
     public void goToRegisterOnClick(View view) {
         passwordConfirmField.setVisibility(View.VISIBLE);
         passwordConfirmLabel.setVisibility(View.VISIBLE);
@@ -92,6 +112,10 @@ public class LoginActivity extends AppCompatActivity {
         logInButton.setVisibility(View.GONE);
     }
 
+    /**
+     * Changes the Activity for logging in.
+     * @param view
+     */
     public void backToLoginOnClick(View view) {
         passwordConfirmField.setVisibility(View.GONE);
         passwordConfirmLabel.setVisibility(View.GONE);
@@ -104,13 +128,22 @@ public class LoginActivity extends AppCompatActivity {
         logInButton.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Performs intend to Main screen.
+     */
     protected void goToMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     /// FireBase ///
 
+    /**
+     * Performs the actual login action.
+     * @param emailSting email address
+     * @param passwordSting the entered password
+     */
     protected void logIn(String emailSting, String passwordSting) {
         mAuth.signInWithEmailAndPassword(emailSting, passwordSting)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -133,6 +166,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Performs the actual register action
+     * @param email Users email address
+     * @param password the entered password
+     */
     protected void registerUser(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -156,6 +194,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Saves the Username to Firebase
+     * @param user The User object that needs to be updated
+     */
     protected void updateUserInfo(final FirebaseUser user) {
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                 .setDisplayName(usernameField.getText().toString())
@@ -173,6 +215,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Sends a confirm email
+     * @param user The User object which the mail needs to be send to
+     */
     protected void sendConfirmEmail(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
