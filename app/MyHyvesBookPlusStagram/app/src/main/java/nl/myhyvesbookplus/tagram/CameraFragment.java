@@ -1,13 +1,15 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.content.Context;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.RelativeLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +30,9 @@ public class CameraFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -58,13 +63,28 @@ public class CameraFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // Hide top bar
+        // ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        mCamera = getCameraInstance();
+        mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+        RelativeLayout preview = (RelativeLayout) view.findViewById(R.id.camera_preview);
+
+        preview.addView(mPreview);
+
+        // Draw picture and switch button over preview
+        view.findViewById(R.id.picture_button).bringToFront();
+        view.findViewById(R.id.switch_camera_button).bringToFront();
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +110,17 @@ public class CameraFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(0);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return c;
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
