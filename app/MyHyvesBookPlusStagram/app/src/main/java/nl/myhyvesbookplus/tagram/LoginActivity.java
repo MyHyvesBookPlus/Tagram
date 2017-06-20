@@ -1,6 +1,7 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = "Login";
 
     /// Views ///
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         findViews();
+        bindOnClick();
     }
 
     @Override
@@ -63,14 +65,42 @@ public class LoginActivity extends AppCompatActivity {
         emailField = (EditText) findViewById(R.id.email);
     }
 
+    protected void bindOnClick() {
+        registerButton.setOnClickListener(this);
+        backToLoginButton.setOnClickListener(this);
+        goToRegisterButton.setOnClickListener(this);
+        logInButton.setOnClickListener(this);
+    }
+
     /// OnClick ///
 
     /**
-     * Performs the logon action.
+     * Called when a view has been clicked.
      *
-     * @param view
+     * @param v The view that was clicked.
      */
-    public void logInOnClick(View view) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.register_button:
+                registerOnClick();
+                break;
+            case R.id.go_to_register_button:
+                goToRegisterOnClick();
+                break;
+            case R.id.login_button:
+                logInOnClick();
+                break;
+            case R.id.back_to_login_button:
+                backToLoginOnClick();
+                break;
+        }
+    }
+
+    /**
+     * Performs the logon action.
+     */
+    public void logInOnClick() {
         String emailSting = emailField.getText().toString();
         String passwordSting = passwordField.getText().toString();
 
@@ -79,9 +109,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Performs the register action.
-     * @param view
      */
-    public void registerOnClick(View view) {
+    public void registerOnClick() {
         Log.d(TAG, "registerOnClick: ");
 
         if (passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
@@ -98,9 +127,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Changes the Activity for registering.
-     * @param view
      */
-    public void goToRegisterOnClick(View view) {
+    public void goToRegisterOnClick() {
         passwordConfirmField.setVisibility(View.VISIBLE);
         passwordConfirmLabel.setVisibility(View.VISIBLE);
         registerButton.setVisibility(View.VISIBLE);
@@ -114,9 +142,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Changes the Activity for logging in.
-     * @param view
      */
-    public void backToLoginOnClick(View view) {
+    public void backToLoginOnClick() {
         passwordConfirmField.setVisibility(View.GONE);
         passwordConfirmLabel.setVisibility(View.GONE);
         registerButton.setVisibility(View.GONE);
