@@ -1,10 +1,10 @@
 package nl.myhyvesbookplus.tagram;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.PersistableBundle;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected Button registerButton, backToLoginButton, goToRegisterButton, logInButton;
 
     protected FirebaseAuth mAuth;
+
+    private ProgressDialog progressDialog;
 
     /// Setup ///
 
@@ -101,25 +103,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Performs the logon action.
      */
     public void logInOnClick() {
-        String emailSting = emailField.getText().toString();
-        String passwordSting = passwordField.getText().toString();
+        String emailString = emailField.getText().toString();
+        String passwordString = passwordField.getText().toString();
 
-        logIn(emailSting, passwordSting);
+        if (!emailString.isEmpty() && !passwordString.isEmpty()) {
+            logIn(emailString, passwordString);
+        } else {
+            Toast.makeText(LoginActivity.this, "Please fill in email and password", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
      * Performs the register action.
      */
     public void registerOnClick() {
-        Log.d(TAG, "registerOnClick: ");
+        String emailString = emailField.getText().toString();
+        String usernameString = usernameField.getText().toString();
+        String passwordString = passwordField.getText().toString();
+        String passwordConfirmString = passwordConfirmField.getText().toString();
 
-        if (passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
-            registerUser(emailField.getText().toString(), passwordField.getText().toString());
+        if (!emailString.isEmpty() && !usernameString.isEmpty()
+                && passwordString.isEmpty() && passwordConfirmString.isEmpty()) {
+            if (passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
+                registerUser(emailField.getText().toString(), passwordField.getText().toString());
+            } else {
+                Toast.makeText(LoginActivity.this, "Passwords do not match",
+                        Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "registerOnClick: Passwords do not match");
+            }
+
         } else {
-            Toast.makeText(LoginActivity.this, "Passwords do not match",
-                    Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "registerOnClick: Passwords do not match");
+            Toast.makeText(LoginActivity.this, "Please fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
+
 
     }
 
@@ -161,6 +177,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void goToMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        progressDialog.dismiss();
         this.finish();
     }
 
@@ -168,11 +185,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * Performs the actual login action.
-     * @param emailSting email address
-     * @param passwordSting the entered password
+     * @param emailString email address
+     * @param passwordString the entered password
      */
-    protected void logIn(String emailSting, String passwordSting) {
-        mAuth.signInWithEmailAndPassword(emailSting, passwordSting)
+    protected void logIn(String emailString, String passwordString) {
+        progressDialog = ProgressDialog.show(LoginActivity.this, "Please Wait", "Logging in", true, false);
+
+        mAuth.signInWithEmailAndPassword(emailString, passwordString)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -186,6 +205,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            progressDialog.dismiss();
                             Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -199,6 +219,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param password the entered password
      */
     protected void registerUser(String email, String password) {
+        this.progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), "Registering", true, false);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -213,6 +234,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
+                                progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(),
                                         Toast.LENGTH_SHORT).show();
                             }
