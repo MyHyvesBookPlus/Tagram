@@ -17,7 +17,7 @@ import android.view.ViewGroup;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,6 +51,11 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
+    protected void bindOnClick() {
+        profilePicButton.setOnClickListener(this);
+        logOutButton.setOnClickListener(this);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,18 @@ public class ProfileFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profile_pic_button:
+                profilePicOnClick();
+                break;
+            case R.id.logout_button:
+                logOutOnClick();
+                break;
         }
     }
 
