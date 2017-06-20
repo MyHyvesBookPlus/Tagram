@@ -16,9 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/logo_text"
         android:cropToPadding="false"
-        android:padding="16dp"
-        android:src="@drawable/logo" />
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:src="@drawable/logo_new" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +80,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:onClick="logInOnClick"
         android:text="@string/login_button" />
 
     <Button
@@ -87,7 +88,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:onClick="goToRegisterOnClick"
         android:text="@string/register" />
 
     <Button
@@ -96,7 +96,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:onClick="registerOnClick"
         android:text="@string/register"
         android:visibility="gone" />
 
@@ -106,7 +105,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:onClick="backToLoginOnClick"
         android:text="@string/back_to_login"
         android:visibility="gone" />
 
