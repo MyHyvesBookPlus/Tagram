@@ -20,4 +20,6 @@
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="logout_button">LogOut</string>
     <string name="profile_picture_button">Change Profile Picture</string>
+    <string name="profile_picture_description">profile picture</string>
+    <string name="change_psw_button">Change Password</string>
 </resources>

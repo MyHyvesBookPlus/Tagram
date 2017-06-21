@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     public void onButtonPressed(Uri uri) {
        if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
+       }
     }
 
     @Override
