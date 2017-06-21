@@ -33,8 +33,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
-    protected Button logOutButton, profilePicButton;
-    protected FirebaseAuth mAuth;
+    protected Button profilePicButton;
 
     private OnFragmentInteractionListener mListener;
 
