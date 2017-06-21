@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.auth.FirebaseAuth;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +42,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
-    protected Button profilePicButton;
+    protected Button profilePicButton, changePwdButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -88,11 +91,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     protected void findViews(View view) {
         profilePicButton = (Button) view.findViewById(R.id.profile_pic_button);
         profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
+        changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
         bindOnClick();
     }
 
     protected void bindOnClick() {
         profilePicButton.setOnClickListener(this);
+        changePwdButton.setOnClickListener(this);
     }
 
     @Override
@@ -122,8 +127,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             case R.id.profile_pic_button:
                 profilePicOnClick();
                 break;
-            case R.id.logout_button:
-//                logOutOnClick();
+            case R.id.change_psw_button:
+                changePwdOnClick();
                 break;
         }
     }
@@ -131,6 +136,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     // TODO Make the function actually do something.
     public void profilePicOnClick() {
 
+    }
+
+    public void changePwdOnClick() {
+        Log.d(TAG, "changePwdOnClick: YEAAAAAAAAAAAAAAY");
     }
 
 
