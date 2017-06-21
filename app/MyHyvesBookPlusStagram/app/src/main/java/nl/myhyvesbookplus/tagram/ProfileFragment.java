@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -42,8 +43,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
-    protected Button profilePicButton, changePwdButton;
-
+    protected Button changePwdButton;
+    protected ImageButton profilePicButton;
     private OnFragmentInteractionListener mListener;
 
     public ProfileFragment() {
@@ -89,7 +90,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
      * Assigns all views.
      */
     protected void findViews(View view) {
-        profilePicButton = (Button) view.findViewById(R.id.profile_pic_button);
+        profilePicButton = (ImageButton) view.findViewById(R.id.profile_pic_button);
         profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
         changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
         bindOnClick();
@@ -135,11 +136,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     // TODO Make the function actually do something.
     public void profilePicOnClick() {
-
+        Log.d(TAG, "profilePicOnClick: JE KAN NOG GEEN FOTO UPLOADEN");
     }
 
     public void changePwdOnClick() {
-        Log.d(TAG, "changePwdOnClick: YEAAAAAAAAAAAAAAY");
+        Log.d(TAG, "changePwdOnClick: JE KAN NOG GEEN WACHTWOORD WIJZIGEN");
     }
 
 
