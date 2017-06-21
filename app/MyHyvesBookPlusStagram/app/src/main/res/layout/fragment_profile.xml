@@ -17,7 +17,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="14dp" />
+                android:layout_height="5dp" />
 
             <TextView
                 android:id="@+id/profile_name"
@@ -78,6 +78,10 @@
                 android:text="@string/change_psw_button"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
         </LinearLayout>
     </ScrollView>
