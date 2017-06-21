@@ -7,6 +7,14 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 /**
@@ -32,6 +40,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     public ProfileFragment() {
         // Required empty public constructor
     }
+
+    protected StorageReference httpsReference;
+    protected ImageView profilePicture;
 
     /**
      * Use this factory method to create a new instance of
@@ -63,13 +74,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
+        }
+    }
+
+    protected void findViews(View view) {
+        profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
+        bindOnClick();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        findViews(view);
+        Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
