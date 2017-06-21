@@ -51,7 +51,7 @@
                 android:contentDescription="@string/profile_picture_description"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                app:srcCompat="@drawable/ic_account_box_black_24dp" />
+                app:srcCompat="@drawable/avatar_standard" />
 
             <Space
                 android:layout_width="match_parent"
