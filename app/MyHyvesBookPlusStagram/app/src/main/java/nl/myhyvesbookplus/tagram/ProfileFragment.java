@@ -11,17 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import static android.content.ContentValues.TAG;
 
@@ -33,7 +37,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener{
+public class ProfileFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,16 +47,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
+    /// Views ///
+
     protected Button changePwdButton;
     protected ImageButton profilePicButton;
-    private OnFragmentInteractionListener mListener;
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
     protected StorageReference httpsReference;
+    protected TextView profileName;
     protected ImageView profilePicture;
+
+    private OnFragmentInteractionListener mListener;
+    protected FirebaseAuth mAuth;
+
+    /// Required empty public constructor ///
+
+    public ProfileFragment() {}
+
 
     /**
      * Use this factory method to create a new instance of
@@ -72,19 +81,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         return fragment;
     }
 
-     @Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null && user.getPhotoUrl() != null) {
+            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
+        }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-         if (user != null && user.getPhotoUrl() != null) {
-             httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
-         }
-     }
+    }
 
     /**
      * Assigns all views.
@@ -92,6 +102,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     protected void findViews(View view) {
         profilePicButton = (ImageButton) view.findViewById(R.id.profile_pic_button);
         profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
+        profileName = (TextView) view.findViewById(R.id.profile_name);
         changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
         bindOnClick();
     }
@@ -101,15 +112,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         changePwdButton.setOnClickListener(this);
     }
 
+    /// Setup ///
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         findViews(view);
 
         if (httpsReference != null) {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
+        }
+
+        // TODO Remove check for getDisplayName if all users are required to enter a displayName anyways.
+        if (user != null && user.getDisplayName() != null) {
+            profileName.setText(user.getDisplayName());
         }
 
         return view;
@@ -117,11 +136,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-       if (mListener != null) {
+        if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-       }
+        }
     }
 
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -135,16 +159,45 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
 
     // TODO Make the function actually do something.
+    /**
+     * Performs profile picture change action.
+     */
     public void profilePicOnClick() {
         Log.d(TAG, "profilePicOnClick: JE KAN NOG GEEN FOTO UPLOADEN");
     }
 
+    // TODO Make this function into its own class for modularity.
+    /**
+     * Performs password reset action.
+     */
     public void changePwdOnClick() {
-        Log.d(TAG, "changePwdOnClick: JE KAN NOG GEEN WACHTWOORD WIJZIGEN");
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null && user.getEmail() != null) {
+            String userEmail = user.getEmail();
+            mAuth.sendPasswordResetEmail(userEmail)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(), "An e-mail was sent. Please follow its instructions.",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "An error occurred, please check internet connection.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            // TODO Add code here for when there is no currently active user.
+        }
+
     }
 
-
-
+    /**
+     * Obligatory onAttach function included in fragments.
+     * @param context provided context for the function to operate on.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -156,6 +209,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     * Obligatory onDetach function included in fragments.
+     */
     @Override
     public void onDetach() {
         super.onDetach();
