@@ -19,5 +19,5 @@
     <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="logout_button">LogOut</string>
-    <string name="profile_picture_button">Profile Picture</string>
+    <string name="profile_picture_button">Change Profile Picture</string>
 </resources>
