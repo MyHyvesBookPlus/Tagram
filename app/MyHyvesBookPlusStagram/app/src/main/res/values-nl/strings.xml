@@ -15,4 +15,6 @@
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="logout_button">Uitloggen</string>
     <string name="profile_picture_button">Wijzig Profiel Foto</string>
+    <string name="profile_picture_description">profiel foto</string>
+    <string name="change_psw_button">Wachtwoord wijzigen</string>
 </resources>

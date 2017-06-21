@@ -12,8 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <Space
                 android:layout_width="match_parent"
@@ -24,9 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:text="Name:"
                 android:textSize="25sp"
-                android:textStyle="bold"
-                android:text="Name:" />
+                android:textStyle="bold" />
 
             <Space
                 android:layout_width="match_parent"
@@ -36,20 +36,48 @@
                 android:id="@+id/logout_button"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
+                android:background="?attr/colorPrimary"
                 android:onClick="logOutOnClick"
-                android:text="@string/logout_button" />
+                android:text="@string/logout_button"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
             <ImageView
                 android:id="@+id/imageView_profile_picture"
+                android:contentDescription="@string/profile_picture_description"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 app:srcCompat="@drawable/ic_account_box_black_24dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
             <Button
                 android:id="@+id/profile_pic_button"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:text="@string/profile_picture_button" />
+                android:background="?attr/colorPrimary"
+                android:text="@string/profile_picture_button"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <Button
+                android:id="@+id/change_psw_button"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="?attr/colorPrimary"
+                android:text="@string/change_psw_button"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
