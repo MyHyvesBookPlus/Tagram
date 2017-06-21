@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,8 +20,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.auth.FirebaseAuth;
-
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,13 +101,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         findViews(view);
-        Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
+
+        if (httpsReference != null) {
+            Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
+        }
+
         return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
+       - if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
