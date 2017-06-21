@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyHyvesBookPlusTagram</string>
+    <string name="back_to_login">terug naar Login</string>
+    <string name="confirm_password">Bevestig wachtwoord</string>
+    <string name="email">Email</string>
+    <string name="login_button">Login</string>
+    <string name="password">Wachtwoord</string>
+    <string name="register">Registreer</string>
+    <string name="title_dashboard">Camera</string>
+    <string name="title_home">Tijdlijn</string>
+    <string name="title_notifications">Profiel</string>
+    <string name="username">Gebruikersnaam</string>
+    <string name="confirm_password_hint">bevestig wachtwoord</string>
+</resources>
