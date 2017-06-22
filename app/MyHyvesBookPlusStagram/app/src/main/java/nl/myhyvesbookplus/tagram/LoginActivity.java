@@ -44,11 +44,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         bindOnClick();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     /**
      * Assigns all views.
      */
@@ -109,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!emailString.isEmpty() && !passwordString.isEmpty()) {
             logIn(emailString, passwordString);
         } else {
-            Toast.makeText(LoginActivity.this, "Please fill in email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, R.string.login_error, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -127,16 +122,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
                 registerUser(emailField.getText().toString(), passwordField.getText().toString());
             } else {
-                Toast.makeText(LoginActivity.this, "Passwords do not match",
+                Toast.makeText(LoginActivity.this, R.string.password_match_error,
                         Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "registerOnClick: Passwords do not match");
             }
-
         } else {
-            Toast.makeText(LoginActivity.this, "Please fill in all the fields.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, R.string.register_error, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     /// UI-changes ///
@@ -189,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param passwordString the entered password
      */
     protected void logIn(String emailString, String passwordString) {
-        progressDialog = ProgressDialog.show(LoginActivity.this, "Please Wait", "Logging in", true, false);
+        progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), "Logging in", true, false);
 
         mAuth.signInWithEmailAndPassword(emailString, passwordString)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
