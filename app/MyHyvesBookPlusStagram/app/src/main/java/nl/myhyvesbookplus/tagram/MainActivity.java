@@ -3,6 +3,7 @@ package nl.myhyvesbookplus.tagram;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

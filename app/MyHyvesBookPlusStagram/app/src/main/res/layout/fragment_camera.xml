@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,12 +10,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hello_camera" />
+        <RelativeLayout
+            android:id="@+id/camera_preview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <ImageButton
+                android:id="@+id/picture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:scaleX="2"
+                android:scaleY="2"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+            <ImageButton
+                android:id="@+id/switch_camera_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="9dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@android:drawable/ic_menu_revert" />
+
+        </RelativeLayout>
 
     </LinearLayout>
-    <!-- TODO: Update blank fragment layout -->
 
 </FrameLayout>
