@@ -1,5 +1,4 @@
 package nl.myhyvesbookplus.tagram;
-
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
@@ -9,12 +8,13 @@ import android.view.SurfaceView;
 import java.io.IOException;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    SurfaceHolder mHolder;
-    Camera mCamera;
+    private SurfaceHolder mHolder;
+    private Camera mCamera;
+    private static int facing = 0;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
-        mCamera = camera;
+        mCamera = camera.open(facing);
         mCamera.setDisplayOrientation(90);
 
         mHolder = getHolder();
@@ -23,8 +23,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder mHolder) {
-        Log.d("camera", "ding");
-
         try {
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
@@ -64,5 +62,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder holder) {
         mCamera.stopPreview();
         mCamera.release();
+    }
+
+    public static void switchFacing() {
+        if (facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
+            facing = Camera.CameraInfo.CAMERA_FACING_BACK;
+        else
+            facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
     }
 }
