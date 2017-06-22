@@ -12,4 +12,6 @@
     <string name="title_notifications">Profiel</string>
     <string name="username">Gebruikersnaam</string>
     <string name="confirm_password_hint">bevestig wachtwoord</string>
+    <string name="logo_text">MyHyvesBookPlusTagram logo</string>
+    <string name="please_wait">Wacht a.u.b.</string>
 </resources>
