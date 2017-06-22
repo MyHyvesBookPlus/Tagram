@@ -170,8 +170,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      */
     public void changePwdOnClick() {
         if (user != null && user.getEmail() != null) {
-            String userEmail = user.getEmail();
-            FirebaseAuth.getInstance().sendPasswordResetEmail(userEmail)
+            FirebaseAuth.getInstance().sendPasswordResetEmail(user.getEmail())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
