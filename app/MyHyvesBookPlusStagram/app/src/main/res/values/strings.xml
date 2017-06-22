@@ -16,5 +16,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
+    <string name="logout_button">LogOut</string>
+    <string name="profile_picture_button">Change Profile Picture</string>
+    <string name="profile_picture_description">profile picture</string>
+    <string name="change_psw_button">Change Password</string>
     <string name="please_wait">Please Wait</string>
 </resources>

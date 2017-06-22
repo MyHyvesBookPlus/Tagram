@@ -13,5 +13,9 @@
     <string name="username">Gebruikersnaam</string>
     <string name="confirm_password_hint">bevestig wachtwoord</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
+    <string name="logout_button">Uitloggen</string>
+    <string name="profile_picture_button">Wijzig Profiel Foto</string>
+    <string name="profile_picture_description">profiel foto</string>
+    <string name="change_psw_button">Wachtwoord wijzigen</string>
     <string name="please_wait">Wacht a.u.b.</string>
 </resources>
