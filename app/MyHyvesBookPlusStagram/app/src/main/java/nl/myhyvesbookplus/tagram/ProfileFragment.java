@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected ImageView profilePicture;
 
     private OnFragmentInteractionListener mListener;
-    protected FirebaseAuth mAuth;
+    protected FirebaseUser user;
 
     /// Required empty public constructor ///
 
@@ -88,12 +88,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null && user.getPhotoUrl() != null) {
             httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
         }
-
     }
 
     /**
@@ -119,7 +118,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         findViews(view);
 
         if (httpsReference != null) {
@@ -171,27 +169,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Performs password reset action.
      */
     public void changePwdOnClick() {
-        FirebaseUser user = mAuth.getCurrentUser();
-
         if (user != null && user.getEmail() != null) {
             String userEmail = user.getEmail();
-            mAuth.sendPasswordResetEmail(userEmail)
+            FirebaseAuth.getInstance().sendPasswordResetEmail(userEmail)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "An e-mail was sent. Please follow its instructions.",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "An error occurred, please check internet connection.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(getActivity(), task.isSuccessful()
+                                    ? "An e-mail was sent, please follow its instructions."
+                                    : "An error occurred, please check internet connection.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
             // TODO Add code here for when there is no currently active user.
         }
-
     }
 
     /**
