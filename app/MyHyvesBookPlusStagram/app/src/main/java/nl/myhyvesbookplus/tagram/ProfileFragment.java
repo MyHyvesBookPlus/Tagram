@@ -91,9 +91,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null && user.getPhotoUrl() != null) {
-            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
-        }
     }
 
     /**
@@ -121,9 +118,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         findViews(view);
 
+        if (user != null && user.getPhotoUrl() != null) {
+            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
+        }
+
         if (httpsReference != null) {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
+
+        profilePicture.invalidate();
 
         if (user != null && user.getDisplayName() != null) {
             profileName.setText(user.getDisplayName());
@@ -188,27 +191,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             UploadClass uploadClass = new UploadClass(getActivity());
             uploadClass.uploadProfilePicture(imageBitmap);
-//            uploadClass.uploadPicture(new BitmapPost(imageBitmap, "Ik ben een heel mooi comment"));
-//            downloadUrl = uploadClass.getDownloadUrl();
-//            updateUserProfilePic(user);
         }
     }
 
-//    protected void updateUserProfilePic(final FirebaseUser user) {
-//        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-//                .setPhotoUri(downloadUrl)
-//                .build();
-//
-//        user.updateProfile(request)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "User profile updated!");
-//                        }
-//                    }
-//                });
-//    }
 
 
     // TODO Make this function into its own class for modularity.
