@@ -1,22 +1,20 @@
 package nl.myhyvesbookplus.tagram;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -25,14 +23,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.net.URI;
-
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,27 +37,24 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     private static Uri downloadUrl;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    /// Views ///
-
     protected Button changePwdButton;
     protected ImageButton profilePicButton;
+
+    /// Views ///
     protected StorageReference httpsReference;
     protected TextView profileName;
     protected ImageView profilePicture;
-
-    private OnFragmentInteractionListener mListener;
     protected FirebaseUser user;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private OnFragmentInteractionListener mListener;
 
     /// Required empty public constructor ///
 
@@ -193,27 +184,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             UploadClass uploadClass = new UploadClass();
-            uploadClass.uploadPicture(imageBitmap);
-            downloadUrl = uploadClass.getDownloadUrl();
-            updateUserProfilePic(user);
+            uploadClass.uploadProfilePicture(imageBitmap);
+//            uploadClass.uploadPicture(new BitmapPost(imageBitmap, "Ik ben een heel mooi comment"));
+//            downloadUrl = uploadClass.getDownloadUrl();
+//            updateUserProfilePic(user);
         }
     }
 
-    protected void updateUserProfilePic(final FirebaseUser user) {
-        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(downloadUrl)
-                .build();   
-
-        user.updateProfile(request)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated!");
-                        }
-                    }
-                });
-    }
+//    protected void updateUserProfilePic(final FirebaseUser user) {
+//        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+//                .setPhotoUri(downloadUrl)
+//                .build();
+//
+//        user.updateProfile(request)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d(TAG, "User profile updated!");
+//                        }
+//                    }
+//                });
+//    }
 
 
     // TODO Make this function into its own class for modularity.

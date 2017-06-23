@@ -15,6 +15,10 @@ abstract class Post {
     private int nietSlechts;
     private String poster;
 
+    Post() {
+        // Default constructor required for calls to Post.getValue(User.class)
+    }
+
     Post(String comment, Date date, int nietSlechts, String poster) {
         this.date = date;
         this.comment = comment;
@@ -30,15 +34,31 @@ abstract class Post {
         return date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public String getComment() {
         return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public int getNietSlechts() {
         return nietSlechts;
     }
 
+    public void setNietSlechts(int nietSlechts) {
+        this.nietSlechts = nietSlechts;
+    }
+
     public String getPoster() {
         return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

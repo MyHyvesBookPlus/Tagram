@@ -5,23 +5,28 @@ import android.net.Uri;
 import java.util.Date;
 
 public class UriPost extends Post {
-    private Uri photo;
+    private String photo;
 
     public UriPost() {
+        // Default constructor required for calls to DataSnapshot.getValue(UriPost.class)
 
     }
 
     public UriPost(Uri photo, String comment, Date date, int nietSlechts, String poster) {
         super(comment, date, nietSlechts, poster);
-        this.photo = photo;
+        this.photo = photo.toString();
     }
 
-    public UriPost(Uri photo, String comment) {
+    public UriPost(String photo, String comment) {
         super(comment);
         this.photo = photo;
     }
 
-    public Uri getUri() {
+    public String getUri() {
         return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

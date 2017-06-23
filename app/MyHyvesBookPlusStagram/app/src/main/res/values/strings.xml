@@ -24,7 +24,4 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="change_psw_button">Change Password</string>
     <string name="please_wait">Please Wait</string>
-    <string name="login_error">Please fill in email and password</string>
-    <string name="register_error">Please fill in all the fields.</string>
-    <string name="password_match_error">Passwords do not match</string>
 </resources>

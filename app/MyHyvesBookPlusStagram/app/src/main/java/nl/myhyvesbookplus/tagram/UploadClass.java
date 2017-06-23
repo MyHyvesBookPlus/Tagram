@@ -29,11 +29,9 @@ import nl.myhyvesbookplus.tagram.model.UriPost;
 
 public class UploadClass {
 
+    private static final String TAG = "UploadClass";
     private StorageReference mStorageRef;
     private DatabaseReference mDataRef;
-
-    private static final String TAG = "UploadClass";
-    private static Uri downloadUrl;
 
     public UploadClass() {
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -53,7 +51,7 @@ public class UploadClass {
     public void uploadPicture(final BitmapPost post) {
 
 
-        UploadTask uploadTask = mStorageRef.child("posts").child("UniquePostName").putBytes(bitmapToBytes(post.getBitmap()));
+        UploadTask uploadTask = mStorageRef.child("posts").child("UniquePostName" + ".jpg").putBytes(bitmapToBytes(post.getBitmap()));
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -66,13 +64,13 @@ public class UploadClass {
                         // Handle successful uploads on complete
                         Log.d(TAG, "onSuccess: Upload Success!");
                         Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-//                        putPostInDatabase(post.getUriPost(downloadUrl));
+                        putPostInDatabase(post.getUriPost(downloadUrl));
                     }
                 });
     }
 
     private void putPostInDatabase(UriPost post) {
-        DatabaseReference ref = mDataRef.child("posts").child("UniquePostName" + ".jpg"); // TODO: Naam voor post.
+        DatabaseReference ref = mDataRef.child("posts").child("UniquePostName"); // TODO: Naam voor post.
         ref.setValue(post) // FIXME: Grote boos veroorzaker
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -82,13 +80,8 @@ public class UploadClass {
                         } else {
                             Log.d(TAG, "onComplete: " + task.getException().getLocalizedMessage());
                         }
-                        downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
                     }
                 });
-    }
-
-    public Uri getDownloadUrl() {
-        return downloadUrl;
     }
 
     private String getUserUid() {

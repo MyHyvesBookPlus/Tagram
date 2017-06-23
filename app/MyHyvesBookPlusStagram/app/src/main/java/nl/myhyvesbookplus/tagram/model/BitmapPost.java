@@ -25,4 +25,8 @@ public class BitmapPost extends Post {
     public UriPost getUriPost(Uri url) {
         return new UriPost(url, getComment(), getDate(), getNietSlechts(), getPoster());
     }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
 }
