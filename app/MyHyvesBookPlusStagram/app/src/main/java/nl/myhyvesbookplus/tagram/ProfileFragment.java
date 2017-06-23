@@ -91,9 +91,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null && user.getPhotoUrl() != null) {
-            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
-        }
     }
 
     /**
@@ -121,9 +118,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         findViews(view);
 
+        if (user != null && user.getPhotoUrl() != null) {
+            httpsReference = FirebaseStorage.getInstance().getReferenceFromUrl(user.getPhotoUrl().toString());
+        }
+
         if (httpsReference != null) {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
+
+        profilePicture.invalidate();
 
         if (user != null && user.getDisplayName() != null) {
             profileName.setText(user.getDisplayName());
@@ -188,7 +191,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             UploadClass uploadClass = new UploadClass(getActivity());
             uploadClass.uploadProfilePicture(imageBitmap);
-            profilePicture.invalidate();
         }
     }
 
@@ -249,6 +251,4 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

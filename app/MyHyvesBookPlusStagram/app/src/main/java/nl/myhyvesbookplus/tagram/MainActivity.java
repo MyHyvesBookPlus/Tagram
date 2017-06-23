@@ -1,5 +1,6 @@
 package nl.myhyvesbookplus.tagram;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,25 +34,25 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
                 case nl.myhyvesbookplus.tagram.R.id.navigation_timeline:
                     Log.d(TAG, "onNavigationItemSelected: Timeline");
                     TimelineFragment timeline = new TimelineFragment();
-                    transaction.replace(R.id.content, timeline);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.replace(R.id.content, timeline)
+                            .addToBackStack(null)
+                            .commit();
                     return true;
 
                 case nl.myhyvesbookplus.tagram.R.id.navigation_camera:
                     Log.d(TAG, "onNavigationItemSelected: Camera");
                     CameraFragment camera = new CameraFragment();
-                    transaction.replace(R.id.content, camera);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.replace(R.id.content, camera)
+                            .addToBackStack(null)
+                            .commit();
                     return true;
 
                 case nl.myhyvesbookplus.tagram.R.id.navigation_profile:
                     Log.d(TAG, "onNavigationItemSelected: Profile");
                     ProfileFragment profile = new ProfileFragment();
-                    transaction.replace(R.id.content, profile);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.replace(R.id.content, profile)
+                            .addToBackStack(null)
+                            .commit();
                     return true;
             }
             return false;
@@ -110,6 +111,13 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
     @Override
     public void ProfilePictureUpdated(Boolean success) {
         Log.d(TAG, "ProfilePictureUpdated: Ja ik luister naar je!");
+        FragmentManager man = getFragmentManager();
+        ProfileFragment frag = (ProfileFragment) man.findFragmentById(R.id.content);
+        FragmentTransaction transaction = man.beginTransaction();
+        transaction.detach(frag)
+                .attach(frag)
+                .commit();
+        Log.d(TAG, "ProfilePictureUpdated: Done reloading fragment");
     }
 
 }
