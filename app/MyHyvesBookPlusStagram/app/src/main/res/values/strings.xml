@@ -12,10 +12,17 @@
     <string name="register">Register</string>
     <string name="back_to_login">back to Login</string>
     <string name="email">Email</string>
+    <string name="login_error">Please fill in email and password</string>
+    <string name="password_match_error">Passwords do not match</string>
+    <string name="register_error">Please fill in all the fields</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
+    <string name="logout_button">LogOut</string>
+    <string name="profile_picture_button">Change Profile Picture</string>
+    <string name="profile_picture_description">profile picture</string>
+    <string name="change_psw_button">Change Password</string>
     <string name="please_wait">Please Wait</string>
     <string name="login_error">Please fill in email and password</string>
     <string name="register_error">Please fill in all the fields.</string>

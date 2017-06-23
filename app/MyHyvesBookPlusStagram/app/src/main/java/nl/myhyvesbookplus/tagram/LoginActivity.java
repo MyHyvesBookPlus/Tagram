@@ -235,6 +235,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    //TODO Make modular for use with Profile fragment.
     /**
      * Saves the Username to Firebase
      * @param user The User object that needs to be updated

@@ -1,13 +1,25 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.content.Context;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +40,9 @@ public class CameraFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -58,13 +73,69 @@ public class CameraFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // Hide top bar
+        // ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        final View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+        final RelativeLayout preview = (RelativeLayout) view.findViewById(R.id.camera_preview);
+
+        preview.addView(mPreview);
+
+        // Draw picture and switch button over preview
+        view.findViewById(R.id.picture_button).bringToFront();
+        view.findViewById(R.id.switch_camera_button).bringToFront();
+
+        ((ImageButton)view.findViewById(R.id.picture_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Snap!", Toast.LENGTH_SHORT).show();
+                /*
+                PictureCallback mPicture = new PictureCallback() {
+
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        Log.v("picture", "Getting output media file");
+                        File pictureFile = getOutputMediaFile();
+                        if (pictureFile == null) {
+                            Log.v("picture", "Error creating output file");
+                            return;
+                        }
+                        try {
+                            FileOutputStream fos = new FileOutputStream(pictureFile);
+                            fos.write(data);
+                            fos.close();
+                        } catch (IOException e) {
+                            Log.v("picture", e.getMessage());
+                        }
+                    }
+                };
+                */
+            }
+        });
+
+        ((ImageButton)view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraPreview.switchFacing();
+
+                preview.removeView(mPreview);
+                mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+                preview.addView(mPreview);
+
+                view.findViewById(R.id.picture_button).bringToFront();
+                view.findViewById(R.id.switch_camera_button).bringToFront();
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -89,6 +160,30 @@ public class CameraFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public static Camera getCameraInstance(int facing) {
+        Camera c = null;
+        try {
+            c = Camera.open(facing);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return c;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    public void setCamera(Camera c) {
+        this.mCamera = c;
     }
 
     /**

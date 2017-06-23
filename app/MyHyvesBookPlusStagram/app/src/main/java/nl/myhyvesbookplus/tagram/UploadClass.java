@@ -33,6 +33,7 @@ public class UploadClass {
     private DatabaseReference mDataRef;
 
     private static final String TAG = "UploadClass";
+    private static Uri downloadUrl;
 
     public UploadClass() {
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -81,8 +82,13 @@ public class UploadClass {
                         } else {
                             Log.d(TAG, "onComplete: " + task.getException().getLocalizedMessage());
                         }
+                        downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
                     }
                 });
+    }
+
+    public Uri getDownloadUrl() {
+        return downloadUrl;
     }
 
     private String getUserUid() {

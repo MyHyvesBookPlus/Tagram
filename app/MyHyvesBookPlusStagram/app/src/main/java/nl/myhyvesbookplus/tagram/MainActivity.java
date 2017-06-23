@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         if (mAuth.getCurrentUser() == null) {
             goToLogin();
         }
+
+        Log.d(TAG, "onCreate: " + mAuth.getCurrentUser().getPhotoUrl() );
 
         TimelineFragment fragment = new TimelineFragment();
 
