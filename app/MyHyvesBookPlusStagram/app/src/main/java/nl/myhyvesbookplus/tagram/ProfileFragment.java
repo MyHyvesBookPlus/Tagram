@@ -42,7 +42,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected TextView profileName;
     protected ImageView profilePicture;
     protected FirebaseUser user;
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
+
 
     /// Required empty public constructor ///
 

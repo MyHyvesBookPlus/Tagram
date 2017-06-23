@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         FragmentManager man = getFragmentManager();
         ProfileFragment frag = (ProfileFragment) man.findFragmentById(R.id.content);
         FragmentTransaction transaction = man.beginTransaction();
+        frag.progressDialog.dismiss();
         transaction.detach(frag)
                 .attach(frag)
                 .commit();
