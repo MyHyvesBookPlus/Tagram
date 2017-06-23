@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import nl.myhyvesbookplus.tagram.controller.UploadClass;
 import nl.myhyvesbookplus.tagram.model.BitmapPost;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, UploadClass.ProfilePictureUpdatedListener {
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, UploadClass.ProfilePictureUpdatedListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -110,14 +110,12 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
 
     @Override
     public void ProfilePictureUpdated(Boolean success) {
-        Log.d(TAG, "ProfilePictureUpdated: Ja ik luister naar je!");
         FragmentManager man = getFragmentManager();
         ProfileFragment frag = (ProfileFragment) man.findFragmentById(R.id.content);
         FragmentTransaction transaction = man.beginTransaction();
         transaction.detach(frag)
                 .attach(frag)
                 .commit();
-        Log.d(TAG, "ProfilePictureUpdated: Done reloading fragment");
     }
 
 }

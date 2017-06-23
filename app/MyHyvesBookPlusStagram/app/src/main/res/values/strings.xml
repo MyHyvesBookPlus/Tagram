@@ -24,4 +24,6 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="change_psw_button">Change Password</string>
     <string name="please_wait">Please Wait</string>
+    <string name="mail_successful">An e-mail was sent. Please follow its instructions.</string>
+    <string name="mail_failed">An error occurred. Please check internet connection.</string>
 </resources>

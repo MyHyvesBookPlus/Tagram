@@ -1,6 +1,7 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,64 +33,25 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    final static private String TAG = "ProfileFragment";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static Uri downloadUrl;
     protected Button changePwdButton;
     protected ImageButton profilePicButton;
-
-    /// Views ///
     protected StorageReference httpsReference;
     protected TextView profileName;
     protected ImageView profilePicture;
     protected FirebaseUser user;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private OnFragmentInteractionListener mListener;
+    private ProgressDialog progressDialog;
 
     /// Required empty public constructor ///
 
-    public ProfileFragment() {}
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public ProfileFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
         user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -126,20 +88,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
 
-        profilePicture.invalidate();
+        profilePicture.invalidate(); // To display the profile picture after it has been updated.
 
         if (user != null && user.getDisplayName() != null) {
             profileName.setText(user.getDisplayName());
         }
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     /**
@@ -160,11 +115,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     // TODO Make the function actually do something.
+
     /**
      * Performs profile picture change action.
      */
     public void profilePicOnClick() {
-//        Log.d(TAG, "profilePicOnClick: JE KAN NOG GEEN FOTO UPLOADEN");
         dispatchTakePictureIntent();
     }
 
@@ -180,6 +135,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Grabs the image just taken by the built-in camera and pushes this image to the user account.
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -189,12 +145,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), "Uploading...", true, false);
             UploadClass uploadClass = new UploadClass(getActivity());
             uploadClass.uploadProfilePicture(imageBitmap);
+            progressDialog.dismiss();
         }
     }
 
     // TODO Make this function into its own class for modularity.
+
     /**
      * Performs password reset action.
      */
@@ -205,50 +164,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getActivity(), task.isSuccessful()
-                                    ? "An e-mail was sent, please follow its instructions."
-                                    : "An error occurred, please check internet connection.",
+                                            ? getString(R.string.mail_successful)
+                                            : getString(R.string.mail_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {
             // TODO Add code here for when there is no currently active user.
         }
-    }
-
-    /**
-     * Obligatory onAttach function included in fragments.
-     * @param context provided context for the function to operate on.
-     */
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    /**
-     * Obligatory onDetach function included in fragments.
-     */
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * See the Android Training lesson http://developer.android.com/training/basics/fragments/communicating.html
-     * for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
