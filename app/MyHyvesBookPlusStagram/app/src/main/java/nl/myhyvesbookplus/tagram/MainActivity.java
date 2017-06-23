@@ -3,6 +3,7 @@ package nl.myhyvesbookplus.tagram;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import nl.myhyvesbookplus.tagram.model.BitmapPost;
 
 public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener {
     final static private String TAG = "MainScreen";
@@ -91,11 +94,18 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
     public void logOutOnClick(View view) {
         FirebaseAuth.getInstance().signOut();
         goToLogin();
-        this.finish();
     }
 
     protected void goToLogin() {
         Intent goToLogIn = new Intent(this, LoginActivity.class);
         startActivity(goToLogIn);
+        this.finish();
+    }
+
+    public void testCreatePost(View view) {
+        UploadClass uploadClass = new UploadClass();
+        Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8);
+        BitmapPost bitmapPost = new BitmapPost(bitmap, "Dit is een Test!");
+        uploadClass.uploadPicture(bitmapPost);
     }
 }

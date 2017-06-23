@@ -17,4 +17,7 @@
     <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="please_wait">Please Wait</string>
+    <string name="login_error">Please fill in email and password</string>
+    <string name="register_error">Please fill in all the fields.</string>
+    <string name="password_match_error">Passwords do not match</string>
 </resources>
