@@ -185,28 +185,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             UploadClass uploadClass = new UploadClass();
             uploadClass.uploadProfilePicture(imageBitmap);
-//            uploadClass.uploadPicture(new BitmapPost(imageBitmap, "Ik ben een heel mooi comment"));
-//            downloadUrl = uploadClass.getDownloadUrl();
-//            updateUserProfilePic(user);
+            profilePicture.invalidate();
         }
     }
-
-//    protected void updateUserProfilePic(final FirebaseUser user) {
-//        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-//                .setPhotoUri(downloadUrl)
-//                .build();
-//
-//        user.updateProfile(request)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "User profile updated!");
-//                        }
-//                    }
-//                });
-//    }
-
 
     // TODO Make this function into its own class for modularity.
     /**
