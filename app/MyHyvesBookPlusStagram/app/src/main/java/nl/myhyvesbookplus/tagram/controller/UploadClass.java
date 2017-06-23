@@ -1,5 +1,6 @@
 package nl.myhyvesbookplus.tagram.controller;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -34,9 +35,12 @@ public class UploadClass {
     private StorageReference mStorageRef;
     private DatabaseReference mDataRef;
 
-    public UploadClass() {
+    private ProfilePictureUpdatedListener mListener;
+
+    public UploadClass(Context context) {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mDataRef = FirebaseDatabase.getInstance().getReference();
+        mListener = (ProfilePictureUpdatedListener) context;
     }
 
     /// Helpers ///
@@ -117,7 +121,12 @@ public class UploadClass {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "onComplete: Updated profile picture");
+                        mListener.ProfilePictureUpdated(true);
                     }
                 });
+    }
+
+    public interface ProfilePictureUpdatedListener {
+        void ProfilePictureUpdated(Boolean success);
     }
 }

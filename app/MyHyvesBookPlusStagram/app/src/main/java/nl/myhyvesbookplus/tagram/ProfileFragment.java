@@ -26,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import nl.myhyvesbookplus.tagram.controller.UploadClass;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -38,6 +40,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    final static private String TAG = "ProfileFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -183,7 +186,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            UploadClass uploadClass = new UploadClass();
+            UploadClass uploadClass = new UploadClass(getActivity());
             uploadClass.uploadProfilePicture(imageBitmap);
 //            uploadClass.uploadPicture(new BitmapPost(imageBitmap, "Ik ben een heel mooi comment"));
 //            downloadUrl = uploadClass.getDownloadUrl();
@@ -265,4 +268,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

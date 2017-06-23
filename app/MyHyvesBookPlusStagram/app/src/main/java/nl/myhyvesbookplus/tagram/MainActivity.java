@@ -1,15 +1,12 @@
 package nl.myhyvesbookplus.tagram;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,9 +14,10 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import nl.myhyvesbookplus.tagram.controller.UploadClass;
 import nl.myhyvesbookplus.tagram.model.BitmapPost;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, UploadClass.ProfilePictureUpdatedListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -74,14 +72,11 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
             goToLogin();
         }
 
-        Log.d(TAG, "onCreate: " + mAuth.getCurrentUser().getPhotoUrl() );
-
         TimelineFragment fragment = new TimelineFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.content, fragment);
         transaction.commit();
-
     }
 
     @Override
@@ -106,9 +101,15 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
     }
 
     public void testCreatePost(View view) {
-        UploadClass uploadClass = new UploadClass();
+        UploadClass uploadClass = new UploadClass(this);
         Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8);
         BitmapPost bitmapPost = new BitmapPost(bitmap, "Dit is een Test!");
         uploadClass.uploadPicture(bitmapPost);
     }
+
+    @Override
+    public void ProfilePictureUpdated(Boolean success) {
+        Log.d(TAG, "ProfilePictureUpdated: Ja ik luister naar je!");
+    }
+
 }
