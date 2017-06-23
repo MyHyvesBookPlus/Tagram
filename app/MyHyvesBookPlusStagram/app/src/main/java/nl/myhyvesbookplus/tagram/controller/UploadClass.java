@@ -1,4 +1,4 @@
-package nl.myhyvesbookplus.tagram;
+package nl.myhyvesbookplus.tagram.controller;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,10 +23,11 @@ import java.io.ByteArrayOutputStream;
 import nl.myhyvesbookplus.tagram.model.BitmapPost;
 import nl.myhyvesbookplus.tagram.model.UriPost;
 
-/**
- * Created by marijnjansen on 20/06/2017.
- */
+import static java.lang.System.currentTimeMillis;
 
+/**
+ * Class that does all the photo uploading things.
+ */
 public class UploadClass {
 
     private static final String TAG = "UploadClass";
@@ -46,12 +47,20 @@ public class UploadClass {
         return baos.toByteArray();
     }
 
+    private String getUserUid() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            return user.getUid();
+        }
+        return "";
+    }
+
     /// Post Uploads ///
 
     public void uploadPicture(final BitmapPost post) {
+        final String name = getUserUid() + currentTimeMillis();
 
-
-        UploadTask uploadTask = mStorageRef.child("posts").child("UniquePostName" + ".jpg").putBytes(bitmapToBytes(post.getBitmap()));
+        UploadTask uploadTask = mStorageRef.child("posts").child(name + ".jpg").putBytes(bitmapToBytes(post.getBitmap()));
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -64,14 +73,14 @@ public class UploadClass {
                         // Handle successful uploads on complete
                         Log.d(TAG, "onSuccess: Upload Success!");
                         Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                        putPostInDatabase(post.getUriPost(downloadUrl));
+                        putPostInDatabase(post.getUriPost(downloadUrl), name);
                     }
                 });
     }
 
-    private void putPostInDatabase(UriPost post) {
-        DatabaseReference ref = mDataRef.child("posts").child("UniquePostName"); // TODO: Naam voor post.
-        ref.setValue(post) // FIXME: Grote boos veroorzaker
+    private void putPostInDatabase(UriPost post, String name) {
+        DatabaseReference ref = mDataRef.child("posts").child(name);
+        ref.setValue(post)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -84,19 +93,11 @@ public class UploadClass {
                 });
     }
 
-    private String getUserUid() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            return user.getUid();
-        }
-        return "";
-    }
-
     /// Profile picture ///
 
-    protected void uploadProfilePicture(Bitmap picture) {
+    public void uploadProfilePicture(Bitmap picture) {
         byte[] uploadPhoto = bitmapToBytes(picture);
-        UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid()).putBytes(uploadPhoto);
+        UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid() + "_" + currentTimeMillis()).putBytes(uploadPhoto);
         photoUpload.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
