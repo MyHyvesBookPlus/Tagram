@@ -5,9 +5,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Date;
 
 /**
- * Created by marijnjansen on 22/06/2017.
+ * Post is a Class for a Post with a Bitmap as an image.
  */
-
 abstract class Post {
 
     private Date date;

@@ -5,6 +5,9 @@ import android.net.Uri;
 
 import java.util.Date;
 
+/**
+ * BitmapPost is a Class for a Post with a Bitmap as an image.
+ */
 public class BitmapPost extends Post {
     private Bitmap photo;
 

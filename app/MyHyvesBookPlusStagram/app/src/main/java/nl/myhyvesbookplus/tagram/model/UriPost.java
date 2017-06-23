@@ -4,6 +4,9 @@ import android.net.Uri;
 
 import java.util.Date;
 
+/**
+ * UriPost is a Class for a Post with a Uri as an image.
+ */
 public class UriPost extends Post {
     private String photo;
 
