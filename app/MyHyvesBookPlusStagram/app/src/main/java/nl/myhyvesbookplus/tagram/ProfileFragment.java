@@ -1,10 +1,13 @@
 package nl.myhyvesbookplus.tagram;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +25,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
+import java.net.URI;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -42,6 +47,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static Uri downloadUrl;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -124,7 +131,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
 
-        // TODO Remove check for getDisplayName if all users are required to enter a displayName anyways.
         if (user != null && user.getDisplayName() != null) {
             profileName.setText(user.getDisplayName());
         }
@@ -161,8 +167,54 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Performs profile picture change action.
      */
     public void profilePicOnClick() {
-        Log.d(TAG, "profilePicOnClick: JE KAN NOG GEEN FOTO UPLOADEN");
+//        Log.d(TAG, "profilePicOnClick: JE KAN NOG GEEN FOTO UPLOADEN");
+        dispatchTakePictureIntent();
     }
+
+    /**
+     * Starts new intent for access to the built-in camera of device.
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    /**
+     * Grabs the image just taken by the built-in camera and pushes this image to the user account.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            UploadClass uploadClass = new UploadClass();
+            uploadClass.uploadPicture(imageBitmap);
+            downloadUrl = uploadClass.getDownloadUrl();
+            updateUserProfilePic(user);
+        }
+    }
+
+    protected void updateUserProfilePic(final FirebaseUser user) {
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(downloadUrl)
+                .build();   
+
+        user.updateProfile(request)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated!");
+                        }
+                    }
+                });
+    }
+
 
     // TODO Make this function into its own class for modularity.
     /**

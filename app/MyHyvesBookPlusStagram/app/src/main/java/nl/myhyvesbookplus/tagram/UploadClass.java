@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream;
 public class UploadClass {
 
     private StorageReference mStorageRef;
-
+    private static Uri downloadUrl;
 
     public UploadClass() {
         mStorageRef = FirebaseStorage.getInstance().getReference().child("images");
@@ -45,9 +45,13 @@ public class UploadClass {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Handle successful uploads on complete
-                        Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                        downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
                     }
                 });
+    }
+
+    public Uri getDownloadUrl() {
+        return downloadUrl;
     }
 
     private String getUserUid() {

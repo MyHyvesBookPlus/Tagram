@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
             goToLogin();
         }
 
+        Log.d(TAG, "onCreate: " + mAuth.getCurrentUser().getPhotoUrl() );
+
         TimelineFragment fragment = new TimelineFragment();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -98,5 +100,6 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
     protected void goToLogin() {
         Intent goToLogIn = new Intent(this, LoginActivity.class);
         startActivity(goToLogIn);
+        this.finish();
     }
 }
