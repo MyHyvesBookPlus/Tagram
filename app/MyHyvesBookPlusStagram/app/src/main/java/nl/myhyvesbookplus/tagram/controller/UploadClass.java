@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +21,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import nl.myhyvesbookplus.tagram.model.BitmapPost;
 import nl.myhyvesbookplus.tagram.model.UriPost;
@@ -100,17 +104,24 @@ public class UploadClass {
 
     /// Profile picture ///
 
-    public void uploadProfilePicture(Bitmap picture) {
-        byte[] uploadPhoto = bitmapToBytes(picture);
-        oldPicture = mUser.getPhotoUrl();
-        UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid() + "_" + currentTimeMillis()).putBytes(uploadPhoto);
-        photoUpload.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                updateProfilePictureInUser(downloadUrl);
-            }
-        });
+    public void uploadProfilePicture(File picture) {
+        try {
+            FileInputStream stream = new FileInputStream(picture);
+//        Uri uri = Uri.fromFile(picture);
+            Log.d(TAG, "uploadProfilePicture: This is the uri:" + stream.toString());
+            oldPicture = mUser.getPhotoUrl();
+
+            UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid() + "_" + currentTimeMillis()).putStream(stream);
+            photoUpload.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    updateProfilePictureInUser(downloadUrl);
+                }
+            });
+        } catch (FileNotFoundException fnfe) {
+            Log.d(TAG, "uploadProfilePicture: FIle niet gevonden");
+        }
     }
 
     private void updateProfilePictureInUser(Uri url) {
