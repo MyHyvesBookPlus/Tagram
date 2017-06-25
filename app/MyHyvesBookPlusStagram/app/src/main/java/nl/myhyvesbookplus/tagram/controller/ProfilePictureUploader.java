@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -48,6 +49,12 @@ public class ProfilePictureUploader extends UploadClass {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 updateProfilePictureInUser(downloadUrl);
             }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mListener.ProfilePictureUpdated(false);
+                    }
         });
     }
 

@@ -45,6 +45,7 @@ public class PostUploader extends UploadClass {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "onFailure: Upload Failed");
+                mListener.PostUploadComplete(false);
             }
         })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -66,8 +67,11 @@ public class PostUploader extends UploadClass {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Added post to database");
+                            mListener.PostUploadComplete(true);
                         } else {
                             Log.d(TAG, "onComplete: " + task.getException().getLocalizedMessage());
+                            mListener.PostUploadComplete(false);
+
                         }
                     }
                 });
