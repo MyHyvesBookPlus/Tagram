@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import nl.myhyvesbookplus.tagram.controller.UploadClass;
+import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -192,8 +192,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), "bezig met uploaden", false, false);
-            UploadClass uploadClass = new UploadClass(getActivity());
-            uploadClass.uploadProfilePicture(imageBitmap);
+            ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
+            profilePictureUploader.uploadProfilePicture(imageBitmap);
         }
     }
 
