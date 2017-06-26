@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import nl.myhyvesbookplus.tagram.controller.UploadClass;
+import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
 import static java.lang.System.currentTimeMillis;
@@ -226,8 +227,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), "bezig met uploaden", false, false);
-            UploadClass uploadClass = new UploadClass(getActivity());
-            uploadClass.uploadProfilePicture(photoFile);
+//            Bitmap imageBitmap = Bitmap.createBitmap();
+            ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
+//            profilePictureUploader.uploadProfilePicture(imageBitmap);
         }
     }
 

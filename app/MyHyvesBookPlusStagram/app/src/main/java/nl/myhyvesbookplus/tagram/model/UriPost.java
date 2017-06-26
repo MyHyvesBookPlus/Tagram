@@ -8,28 +8,29 @@ import java.util.Date;
  * UriPost is a Class for a Post with a Uri as an image.
  */
 public class UriPost extends Post {
-    private String photo;
+    private String uri;
 
     public UriPost() {
         // Default constructor required for calls to DataSnapshot.getValue(UriPost.class)
 
     }
 
-    public UriPost(Uri photo, String comment, Date date, int nietSlechts, String poster) {
+    public UriPost(Uri uri, String comment, Date date, int nietSlechts, String poster) {
         super(comment, date, nietSlechts, poster);
-        this.photo = photo.toString();
+        this.uri = uri.toString();
     }
 
-    public UriPost(String photo, String comment) {
+    public UriPost(String uri, String comment) {
         super(comment);
-        this.photo = photo;
+        this.uri = uri;
     }
 
     public String getUri() {
-        return photo;
+        return uri;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
