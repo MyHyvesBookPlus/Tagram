@@ -1,25 +1,22 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import nl.myhyvesbookplus.tagram.controller.UploadClass;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +28,7 @@ import java.io.IOException;
  */
 public class CameraFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
+    private static final String TAG = "CameraFragment";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -43,6 +41,9 @@ public class CameraFragment extends Fragment {
 
     private Camera mCamera;
     private CameraPreview mPreview;
+    private byte[] mPhotoRaw;
+    private Bitmap mPhoto;
+    private int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -73,9 +74,6 @@ public class CameraFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        // Hide top bar
-        // ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
@@ -84,54 +82,127 @@ public class CameraFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
+        mCamera = getCameraInstance(facing);
+        Camera.Parameters params = mCamera.getParameters();
+        params.setRotation(0);
+        mCamera.setParameters(params);
+
         mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-        final RelativeLayout preview = (RelativeLayout) view.findViewById(R.id.camera_preview);
+        final RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
+        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
+        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
+//        final RelativeLayout mImageTaken = (RelativeLayout) view.findViewById(R.id.picture_view);
 
-        preview.addView(mPreview);
+        mCameraLayout.addView(mPreview);
 
-        // Draw picture and switch button over preview
+        // Draw buttons over preview
         view.findViewById(R.id.picture_button).bringToFront();
         view.findViewById(R.id.switch_camera_button).bringToFront();
+        pictureButtons.bringToFront();
+        filterButtons.bringToFront();
 
-        ((ImageButton)view.findViewById(R.id.picture_button)).setOnClickListener(new View.OnClickListener() {
+        (view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Snap!", Toast.LENGTH_SHORT).show();
-                /*
-                PictureCallback mPicture = new PictureCallback() {
+                switchFacing();
 
-                    @Override
-                    public void onPictureTaken(byte[] data, Camera camera) {
-                        Log.v("picture", "Getting output media file");
-                        File pictureFile = getOutputMediaFile();
-                        if (pictureFile == null) {
-                            Log.v("picture", "Error creating output file");
-                            return;
-                        }
-                        try {
-                            FileOutputStream fos = new FileOutputStream(pictureFile);
-                            fos.write(data);
-                            fos.close();
-                        } catch (IOException e) {
-                            Log.v("picture", e.getMessage());
-                        }
-                    }
-                };
-                */
-            }
-        });
-
-        ((ImageButton)view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CameraPreview.switchFacing();
-
-                preview.removeView(mPreview);
+                mCameraLayout.removeView(mPreview);
+                mCamera = getCameraInstance(facing);
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-                preview.addView(mPreview);
+                mCameraLayout.addView(mPreview);
 
                 view.findViewById(R.id.picture_button).bringToFront();
                 view.findViewById(R.id.switch_camera_button).bringToFront();
+            }
+        });
+
+        (view.findViewById(R.id.picture_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCamera.takePicture(null, null, new PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] data, Camera camera) {
+                        Bitmap bmp = rotate(BitmapFactory.decodeByteArray(data, 0, data.length, null), 90);
+                        mPhoto = bmp;
+
+                        PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                        mPicPreview.setId(R.id.pic_preview);
+                        Log.d(TAG, "onPictureTaken: PICTURE");
+
+                        mCameraLayout.addView(mPicPreview);
+
+                        filterButtons.setVisibility(View.VISIBLE);
+                        filterButtons.bringToFront();
+
+//                        mPicPreview.invalidate();
+                        switchButtons(view);
+                    }
+                });
+            }
+        });
+
+        (view.findViewById(R.id.upload_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UploadClass upload = new UploadClass();
+                upload.uploadPicture(mPhoto);
+
+                mPhoto.recycle();
+                mPhoto = null;
+
+                filterButtons.setVisibility(View.GONE);
+                switchButtons(view);
+
+                mCameraLayout.removeView(mPreview);
+
+                mCamera = getCameraInstance(facing);
+                Camera.Parameters params = mCamera.getParameters();
+                params.setRotation(0);
+                mCamera.setParameters(params);
+
+                mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+                mCameraLayout.addView(mPreview);
+
+                view.findViewById(R.id.picture_button).bringToFront();
+                view.findViewById(R.id.switch_camera_button).bringToFront();
+
+                mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+            }
+        });
+
+        (view.findViewById(R.id.filter_left)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+
+                PicturePreview.filterPrev();
+
+                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                mPicPreview.setId(R.id.pic_preview);
+
+                mCameraLayout.addView(mPicPreview);
+
+                view.findViewById(R.id.picture_taken_buttons).bringToFront();
+                filterButtons.setVisibility(View.VISIBLE);
+                filterButtons.bringToFront();
+            }
+        });
+
+        (view.findViewById(R.id.filter_right)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+
+                PicturePreview.filterNext();
+
+                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                mPicPreview.setId(R.id.pic_preview);
+
+                mCameraLayout.addView(mPicPreview);
+
+                view.findViewById(R.id.picture_taken_buttons).bringToFront();
+                filterButtons.setVisibility(View.VISIBLE);
+                filterButtons.bringToFront();
             }
         });
 
@@ -162,6 +233,16 @@ public class CameraFragment extends Fragment {
         mListener = null;
     }
 
+    public static Bitmap rotate(Bitmap bitmap, int degree) {
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+
+        Matrix mtx = new Matrix();
+        mtx.postRotate(degree);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
+    }
+
     public static Camera getCameraInstance(int facing) {
         Camera c = null;
         try {
@@ -172,6 +253,34 @@ public class CameraFragment extends Fragment {
         return c;
     }
 
+    public void switchFacing() {
+        if (facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
+            facing = Camera.CameraInfo.CAMERA_FACING_BACK;
+        else
+            facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+    }
+
+    public void switchButtons(View view) {
+        RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
+        FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.upload_button);
+        FloatingActionButton save = (FloatingActionButton) view.findViewById(R.id.save_button);
+
+        if (((Integer)upload.getVisibility()).equals(View.VISIBLE)) {
+            upload.hide();
+            save.hide();
+
+            view.findViewById(R.id.picture_button).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.switch_camera_button).setVisibility(View.VISIBLE);
+        } else {
+            pictureButtons.bringToFront();
+            upload.show();
+            save.show();
+
+            view.findViewById(R.id.picture_button).setVisibility(View.GONE);
+            view.findViewById(R.id.switch_camera_button).setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -180,10 +289,6 @@ public class CameraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    public void setCamera(Camera c) {
-        this.mCamera = c;
     }
 
     /**
