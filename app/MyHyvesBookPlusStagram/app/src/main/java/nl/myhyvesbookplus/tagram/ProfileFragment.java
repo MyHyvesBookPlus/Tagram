@@ -1,6 +1,7 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import nl.myhyvesbookplus.tagram.controller.UploadClass;
+import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,6 +55,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected TextView profileName;
     protected ImageView profilePicture;
     protected FirebaseUser user;
+    ProgressDialog progressDialog;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -189,8 +191,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            UploadClass uploadClass = new UploadClass(getActivity());
-            uploadClass.uploadProfilePicture(imageBitmap);
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), "bezig met uploaden", false, false);
+            ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
+            profilePictureUploader.uploadProfilePicture(imageBitmap);
         }
     }
 

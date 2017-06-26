@@ -3,7 +3,6 @@ package nl.myhyvesbookplus.tagram;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,10 +14,10 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import nl.myhyvesbookplus.tagram.controller.UploadClass;
-import nl.myhyvesbookplus.tagram.model.BitmapPost;
+import nl.myhyvesbookplus.tagram.controller.DownloadClass;
+import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, UploadClass.ProfilePictureUpdatedListener {
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, ProfilePictureUploader.ProfilePictureUpdatedListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -102,10 +101,8 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
     }
 
     public void testCreatePost(View view) {
-        UploadClass uploadClass = new UploadClass(this);
-        Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8);
-        BitmapPost bitmapPost = new BitmapPost(bitmap, "Dit is een Test!");
-        uploadClass.uploadPicture(bitmapPost);
+        DownloadClass downloadClass = new DownloadClass();
+        downloadClass.getPosts();
     }
 
     @Override
@@ -114,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         FragmentManager man = getFragmentManager();
         ProfileFragment frag = (ProfileFragment) man.findFragmentById(R.id.content);
         FragmentTransaction transaction = man.beginTransaction();
+        frag.progressDialog.dismiss();
         transaction.detach(frag)
                 .attach(frag)
                 .commit();
