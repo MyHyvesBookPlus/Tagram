@@ -38,7 +38,7 @@ public class PostUploader extends UploadClass {
     }
 
     public void uploadPicture(final BitmapPost post) {
-        final String name = getUserUid() + currentTimeMillis();
+        final String name = currentTimeMillis() + "_" + getUserUid();
 
         UploadTask uploadTask = mStorageRef.child("posts").child(name + ".jpg").putBytes(bitmapToBytes(post.getBitmap()));
         uploadTask.addOnFailureListener(new OnFailureListener() {
