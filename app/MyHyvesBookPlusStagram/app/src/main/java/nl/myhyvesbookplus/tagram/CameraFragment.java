@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import nl.myhyvesbookplus.tagram.controller.UploadClass;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
