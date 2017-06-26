@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import nl.myhyvesbookplus.tagram.controller.DownloadClass;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, ProfilePictureUploader.ProfilePictureUpdatedListener {
+public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, ProfilePictureUploader.ProfilePictureUpdatedListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
