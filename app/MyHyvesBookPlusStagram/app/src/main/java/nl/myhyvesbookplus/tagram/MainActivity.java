@@ -17,7 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import nl.myhyvesbookplus.tagram.controller.DownloadClass;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
-public class MainActivity extends AppCompatActivity implements CameraFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, ProfilePictureUploader.ProfilePictureUpdatedListener {
+public class MainActivity extends AppCompatActivity implements
+        CameraFragment.OnFragmentInteractionListener,
+        ProfileFragment.OnFragmentInteractionListener,
+        ProfilePictureUploader.ProfilePictureUpdatedListener,
+        DownloadClass.PostDownloadListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -100,10 +104,10 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         this.finish();
     }
 
-    public void testCreatePost(View view) {
-        DownloadClass downloadClass = new DownloadClass();
-        downloadClass.getPosts();
-    }
+//    public void testCreatePost(View view) {
+//        DownloadClass downloadClass = new DownloadClass();
+//        downloadClass.getPosts();
+//    }
 
     @Override
     public void ProfilePictureUpdated(Boolean success) {
@@ -118,4 +122,12 @@ public class MainActivity extends AppCompatActivity implements CameraFragment.On
         Log.d(TAG, "ProfilePictureUpdated: Done reloading fragment");
     }
 
+    @Override
+    public void PostDownloaded() {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.findFragmentById(R.id.content);
+        TimelineFragment frag = (TimelineFragment) fragmentManager.findFragmentById(R.id.content);
+        frag.startList();
+
+    }
 }

@@ -24,7 +24,7 @@
     <string name="profile_picture_description">profile picture</string>
     <string name="change_psw_button">Change Password</string>
     <string name="please_wait">Please Wait</string>
-
+    <string name="niet_slecht">\"Niet slecht.\"s</string>
     <string name="upload">Upload</string>
     <string name="save">Save</string>
 </resources>

@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String passwordConfirmString = passwordConfirmField.getText().toString();
 
         if (!emailString.isEmpty() && !usernameString.isEmpty()
-                && passwordString.isEmpty() && passwordConfirmString.isEmpty()) {
+                && !passwordString.isEmpty() && !passwordConfirmString.isEmpty()) {
             if (passwordField.getText().toString().equals(passwordConfirmField.getText().toString())) {
                 registerUser(emailField.getText().toString(), passwordField.getText().toString());
             } else {

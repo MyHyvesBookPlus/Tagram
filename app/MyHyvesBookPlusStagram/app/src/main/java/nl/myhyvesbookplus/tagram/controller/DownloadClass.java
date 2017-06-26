@@ -1,5 +1,6 @@
 package nl.myhyvesbookplus.tagram.controller;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -9,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import nl.myhyvesbookplus.tagram.model.UriPost;
 
@@ -18,30 +20,31 @@ import nl.myhyvesbookplus.tagram.model.UriPost;
 
 public class DownloadClass {
     private static final String TAG = "DownloadClass";
-    //    private StorageReference mStorageRef;
     private DatabaseReference mDataRef;
+    private ArrayList<UriPost> mList;
+    private PostDownloadListener mListener;
 
-    public DownloadClass() {
-//        mStorageRef = FirebaseStorage.getInstance().getReference();
+    public DownloadClass(Context context) {
+        if (context instanceof DownloadClass.PostDownloadListener) {
+            mListener = (PostDownloadListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement PostDownloadListener");
+        }
         mDataRef = FirebaseDatabase.getInstance().getReference();
+        mList = new ArrayList<>();
     }
 
-    public UriPost[] getPosts() {
-        UriPost[] posts = new UriPost[10];
-        getPostsFromServer().toArray(posts);
-
-        return posts;
-    }
-
-    private ArrayList<UriPost> getPostsFromServer() {
+    public void getPostsFromServer() {
         Log.d(TAG, "getPostsFromServer: Begin of function");
-        final ArrayList<UriPost> list = new ArrayList<>();
         mDataRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    list.add(data.getValue(UriPost.class));
+                    mList.add(data.getValue(UriPost.class));
                 }
+                Collections.reverse(mList);
+                mListener.PostDownloaded();
             }
 
             @Override
@@ -49,6 +52,13 @@ public class DownloadClass {
                 Log.d(TAG, "onCancelled: " + databaseError.getDetails() + databaseError.getMessage());
             }
         });
-        return list;
+    }
+
+    public ArrayList<UriPost> getmList() {
+        return mList;
+    }
+
+    public interface PostDownloadListener {
+        void PostDownloaded();
     }
 }
