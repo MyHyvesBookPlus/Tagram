@@ -70,6 +70,35 @@
                 android:src="@drawable/ic_arrow_forward_black_24dp"/>
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/comment_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comment:"/>
+
+            <EditText
+                android:id="@+id/comment_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="4"
+                android:layout_margin="4dp"
+                android:padding="5dp"
+                android:visibility="visible"
+                android:background="@android:color/darker_gray"/>
+            <Button
+                android:id="@+id/comment_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"/>
+
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/picture_taken_buttons"
             android:layout_width="match_parent"
@@ -85,12 +114,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
                 android:scaleType="center"
                 app:fabSize="normal"
                 android:src="@android:drawable/ic_menu_upload"/>
 
-            <android.support.design.widget.FloatingActionButton
+            <!--<android.support.design.widget.FloatingActionButton
                 android:id="@+id/save_button"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
@@ -99,7 +128,7 @@
                 android:layout_alignParentBottom="true"
                 android:scaleType="center"
                 app:fabSize="normal"
-                android:src="@android:drawable/ic_menu_save"/>
+                android:src="@android:drawable/ic_menu_save"/>-->
         </RelativeLayout>
 
     </RelativeLayout>
