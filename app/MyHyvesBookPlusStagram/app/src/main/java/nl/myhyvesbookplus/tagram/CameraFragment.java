@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import nl.myhyvesbookplus.tagram.controller.UploadClass;
+import nl.myhyvesbookplus.tagram.controller.PostUploader;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +26,7 @@ import nl.myhyvesbookplus.tagram.controller.UploadClass;
  * Use the {@link CameraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CameraFragment extends Fragment {
+public class CameraFragment extends Fragment implements PostUploader.PostUploadListener{
     // TODO: Rename parameter arguments, choose names that match
     private static final String TAG = "CameraFragment";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -144,8 +144,6 @@ public class CameraFragment extends Fragment {
         (view.findViewById(R.id.upload_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UploadClass upload = new UploadClass();
-                upload.uploadPicture(mPhoto);
 
                 mPhoto.recycle();
                 mPhoto = null;
@@ -291,6 +289,11 @@ public class CameraFragment extends Fragment {
         super.onResume();
     }
 
+    @Override
+    public void PostUploadComplete(Boolean success) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -305,4 +308,5 @@ public class CameraFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
