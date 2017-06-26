@@ -8,13 +8,14 @@ import android.view.SurfaceView;
 import java.io.IOException;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+    private static String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private static int facing = 0;
+    private static int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
-        mCamera = camera.open(facing);
+        mCamera = camera;
         mCamera.setDisplayOrientation(90);
 
         mHolder = getHolder();
@@ -24,6 +25,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder mHolder) {
         try {
+            Log.d(TAG, "surfaceCreated: CREATED");
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
         } catch (IOException e) {
@@ -60,6 +62,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d(TAG, "surfaceDestroyed: DESTROYED");
         mCamera.stopPreview();
         mCamera.release();
     }

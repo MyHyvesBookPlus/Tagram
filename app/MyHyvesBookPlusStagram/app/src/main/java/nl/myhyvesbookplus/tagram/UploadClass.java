@@ -13,6 +13,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Random;
 
 /**
  * Created by marijnjansen on 20/06/2017.
@@ -24,7 +25,8 @@ public class UploadClass {
 
 
     public UploadClass() {
-        mStorageRef = FirebaseStorage.getInstance().getReference().child("images");
+        String name = Integer.toString(new Random().nextInt(10000));
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("images/" + name);
     }
 
     private byte[] bitmapToBytes(Bitmap bitmap) {
