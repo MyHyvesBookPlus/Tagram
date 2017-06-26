@@ -3,7 +3,6 @@
     <string name="title_home">Timeline</string>
     <string name="title_dashboard">Camera</string>
     <string name="title_notifications">Profile</string>
-
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -15,11 +14,10 @@
     <string name="login_error">Please fill in email and password</string>
     <string name="password_match_error">Passwords do not match</string>
     <string name="register_error">Please fill in all the fields</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
-    <string name="logout_button">LogOut</string>
+    <string name="logout_button">Logout</string>
     <string name="profile_picture_button">Change Profile Picture</string>
     <string name="profile_picture_description">profile picture</string>
     <string name="change_psw_button">Change Password</string>
@@ -28,4 +26,9 @@
 
     <string name="upload">Upload</string>
     <string name="save">Save</string>
+    <string name="mail_successful">An e-mail was sent. Please follow its instructions.</string>
+    <string name="mail_failed">An error occurred. Please check internet connection.</string>
+    <string name="image_save_error">Saving image to storage failed. Please make sure there is space available on the device.</string>
+    <string name="update_profile_pic_error">Updating the profile picture failed. Please check network connection.</string>
+    <string name="upload_profile_pic">Uploading profile picture...</string>
 </resources>

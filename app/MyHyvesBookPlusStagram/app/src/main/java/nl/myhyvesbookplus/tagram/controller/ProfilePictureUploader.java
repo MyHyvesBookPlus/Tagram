@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,8 +13,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -39,10 +43,13 @@ public class ProfilePictureUploader extends UploadClass {
         }
     }
 
-    public void uploadProfilePicture(Bitmap picture) {
-        byte[] uploadPhoto = bitmapToBytes(picture);
+    public void uploadProfilePicture(File picture) {
         oldPicture = mUser.getPhotoUrl();
-        UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid() + "_" + currentTimeMillis()).putBytes(uploadPhoto);
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("image/jpg")
+                .build();
+
+        UploadTask photoUpload = mStorageRef.child("profile").child(getUserUid() + "_" + currentTimeMillis()).putFile(Uri.fromFile(picture), metadata);
         photoUpload.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -80,9 +87,9 @@ public class ProfilePictureUploader extends UploadClass {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: Delete successfull");
+                            Log.v(TAG, "onComplete: Delete successful");
                         } else {
-                            Log.d(TAG, "onComplete: " + task.getException().getLocalizedMessage());
+                            Log.v(TAG, "onComplete: " + task.getException().getLocalizedMessage());
                         }
                     }
                 });

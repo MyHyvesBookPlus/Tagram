@@ -19,7 +19,6 @@ import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 public class MainActivity extends AppCompatActivity implements
         CameraFragment.OnFragmentInteractionListener,
-        ProfileFragment.OnFragmentInteractionListener,
         ProfilePictureUploader.ProfilePictureUpdatedListener,
         DownloadClass.PostDownloadListener {
     final static private String TAG = "MainScreen";
