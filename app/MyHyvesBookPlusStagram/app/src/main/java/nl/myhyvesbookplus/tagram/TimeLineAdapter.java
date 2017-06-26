@@ -101,4 +101,5 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick: rowNumber! "+ position);
     }
+
 }
