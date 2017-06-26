@@ -11,7 +11,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private static String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
     private Camera mCamera;
-    private static int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -25,7 +24,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder mHolder) {
         try {
-            Log.d(TAG, "surfaceCreated: CREATED");
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
         } catch (IOException e) {
@@ -62,15 +60,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.d(TAG, "surfaceDestroyed: DESTROYED");
         mCamera.stopPreview();
         mCamera.release();
-    }
-
-    public static void switchFacing() {
-        if (facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
-            facing = Camera.CameraInfo.CAMERA_FACING_BACK;
-        else
-            facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
     }
 }
