@@ -30,9 +30,9 @@ public class ProfileAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     private ArrayList<UriPost> mData;
-    protected TextView comment;
-    protected TextView nietSlechts;
-    protected ImageView photo;
+    private TextView comment;
+    private TextView nietSlechts;
+    private ImageView photo;
 
     ProfileAdapter(Context context, ArrayList<UriPost> data) {
         mContext = context;
@@ -74,5 +74,6 @@ public class ProfileAdapter extends BaseAdapter {
         comment = (TextView) rowView.findViewById(R.id.comment_timeline_profile);
         nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count_profile);
         photo = (ImageView) rowView.findViewById(R.id.timeline_image_profile);
+        return rowView;
     }
 }

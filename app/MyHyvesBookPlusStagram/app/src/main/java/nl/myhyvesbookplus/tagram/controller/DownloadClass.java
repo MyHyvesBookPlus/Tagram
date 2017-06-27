@@ -40,8 +40,10 @@ public class DownloadClass {
         mDataRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    mList.add(data.getValue(UriPost.class));
+
+                        mList.add(data.getValue(UriPost.class));
                 }
                 Collections.reverse(mList);
                 mListener.PostDownloaded();

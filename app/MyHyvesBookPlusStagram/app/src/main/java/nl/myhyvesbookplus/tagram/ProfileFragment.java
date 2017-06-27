@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
         profileName = (TextView) view.findViewById(R.id.profile_name);
         changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
-        listView = (ListView) view.findViewById(R.id.listview);
         bindOnClick();
     }
 
@@ -87,8 +87,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        findViews(view);
+        View viewTimeline = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
+
+
+
+        listView = (ListView) viewTimeline.findViewById(R.id.listview_profile);
+        View viewHeader = inflater.inflate(R.layout.fragment_profile_header, listView, false);
+        findViews(viewHeader);
+        listView.addHeaderView(viewHeader);
 
         if (user != null) {
             if(user.getPhotoUrl() != null) {
@@ -105,10 +111,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         profilePicture.invalidate();
+
         downloadClass = new DownloadClass(getActivity());
         downloadClass.getPostsFromServer();
 
-        return view;
+        return viewTimeline;
     }
 
     /**
@@ -153,8 +160,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     public void startList() {
         ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getmList());
-        listView.setAdapter(adapter);
-        listView.addHeaderView(adapter);
+        if (listView != null) {
+            listView.setAdapter(adapter);
+        } else {
+            Log.d("Jemoeder", "startList: Halloooooooo");
+        }
+            
+//        listView.addHeaderView(adapter);
     }
 
     /**
