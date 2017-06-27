@@ -21,7 +21,7 @@ import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 public class MainActivity extends AppCompatActivity implements
         CameraFragment.OnFragmentInteractionListener,
         ProfilePictureUploader.ProfilePictureUpdatedListener,
-        DownloadClass.PostDownloadListener {
+        DownloadClass.PostDownloadListener, PostUploader.PostUploadListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -128,6 +128,11 @@ public class MainActivity extends AppCompatActivity implements
         fragmentManager.findFragmentById(R.id.content);
         TimelineFragment frag = (TimelineFragment) fragmentManager.findFragmentById(R.id.content);
         frag.startList();
+
+    }
+
+    @Override
+    public void PostUploadComplete(Boolean success) {
 
     }
 }

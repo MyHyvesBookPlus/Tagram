@@ -75,7 +75,9 @@ public class ProfilePictureUploader extends UploadClass {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "onComplete: Updated profile picture");
                         mListener.ProfilePictureUpdated(true);
-                        removeOldPicture();
+                        if (oldPicture != null) {
+                            removeOldPicture();
+                        }
                     }
                 });
     }
