@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -29,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
+import nl.myhyvesbookplus.tagram.controller.DownloadClass;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,6 +46,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected ImageView profilePicture;
     protected FirebaseUser user;
     protected File photoFile = null;
+    private ListView listView;
+    private DownloadClass downloadClass;
 
     ProgressDialog progressDialog;
 
@@ -55,6 +59,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        loadPersonalPosts();
     }
 
     /**
@@ -65,6 +70,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
         profileName = (TextView) view.findViewById(R.id.profile_name);
         changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
+        listView = (ListView) view.findViewById(R.id.listview);
         bindOnClick();
     }
 
@@ -99,6 +105,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         profilePicture.invalidate();
+        downloadClass = new DownloadClass(getActivity());
+        downloadClass.getPostsFromServer();
 
         return view;
     }
@@ -143,6 +151,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void startList() {
+        ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getmList());
+        listView.setAdapter(adapter);
+        listView.addHeaderView(adapter);
+    }
+
     /**
      * Grabs the image just taken by the built-in camera and pushes this image to the user account.
      * @param requestCode The code which corresponds to REQUEST_TAKE_PHOTO. Used as indicator.
@@ -156,6 +170,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
             profilePictureUploader.uploadProfilePicture(photoFile.getAbsoluteFile());
         }
+    }
+
+    public void loadPersonalPosts() {
+
     }
 
 
