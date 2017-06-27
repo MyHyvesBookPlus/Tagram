@@ -16,12 +16,13 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 
 import nl.myhyvesbookplus.tagram.controller.DownloadClass;
+import nl.myhyvesbookplus.tagram.controller.PostUploader;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 public class MainActivity extends AppCompatActivity implements
         CameraFragment.OnFragmentInteractionListener,
         ProfilePictureUploader.ProfilePictureUpdatedListener,
-        DownloadClass.PostDownloadListener {
+        DownloadClass.PostDownloadListener, PostUploader.PostUploadListener {
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -125,5 +126,10 @@ public class MainActivity extends AppCompatActivity implements
         if (frag instanceof TimelineFragment) {
             ((TimelineFragment) frag).startList();
         }
+    }
+
+    @Override
+    public void PostUploadComplete(Boolean success) {
+
     }
 }
