@@ -134,8 +134,10 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 //                        Bitmap bmp = rotate(BitmapFactory.decodeByteArray(data, 0, data.length, null), 90);
 //                        mPhoto = bmp;
                         mPhoto = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+//                        mPhotoRaw = data;
 
                         PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+//                        PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                         mPicPreview.setId(R.id.pic_preview);
 
                         mCameraLayout.addView(mPicPreview);
@@ -171,7 +173,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 upload.uploadPicture(new BitmapPost(((PicturePreview)view.findViewById(R.id.pic_preview)).getPicture(), comment));
 
                 mPhoto.recycle();
-                mPhoto = null;
+//                mPhoto = null;
 
                 filterButtons.setVisibility(View.GONE);
                 switchButtons(view);
@@ -202,6 +204,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 PicturePreview.filterPrev();
 
                 PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+//                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
@@ -220,6 +223,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 PicturePreview.filterNext();
 
                 PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+//                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
@@ -284,7 +288,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
     public static Bitmap rotate(Bitmap bmp, int degree) {
         Matrix mtx = new Matrix();
-        mtx.setRotate(degree);
+        mtx.postRotate(degree);
 
         return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mtx, true);
     }
