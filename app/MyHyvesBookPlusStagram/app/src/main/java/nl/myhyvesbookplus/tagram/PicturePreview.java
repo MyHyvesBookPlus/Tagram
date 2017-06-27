@@ -27,7 +27,7 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     public PicturePreview(Context context, Bitmap bmp) {
         super(context);
-        picture = Bitmap.createScaledBitmap(bmp, 1920, 1440, false);
+        picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
 //        picture = Bitmap.createBitmap(bmp);
         setWillNotDraw(false);
     }
@@ -52,8 +52,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 break;
             case FILTER_BW:
                 Canvas bw = new Canvas();
-                filterPicture = Bitmap.createBitmap(1920, 1440, null);
-//                filterPicture = Bitmap.createBitmap(picture.getWidth(), picture.getHeight(), null);
+//                filterPicture = Bitmap.createBitmap(1920, 1440, null);
+                filterPicture = Bitmap.createBitmap(picture.getWidth() / 2, picture.getHeight() / 2, Bitmap.Config.ARGB_8888);
                 cm.setSaturation(0);
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
