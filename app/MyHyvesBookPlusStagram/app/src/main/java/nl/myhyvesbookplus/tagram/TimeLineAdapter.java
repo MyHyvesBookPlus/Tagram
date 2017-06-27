@@ -38,7 +38,6 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
 
     @Override
     public int getCount() {
-        Log.d(TAG, "getCount: " + mData.size());
         return mData.size();
     }
 
