@@ -1,5 +1,6 @@
 package nl.myhyvesbookplus.tagram;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -104,11 +105,6 @@ public class MainActivity extends AppCompatActivity implements
         this.finish();
     }
 
-//    public void testCreatePost(View view) {
-//        DownloadClass downloadClass = new DownloadClass();
-//        downloadClass.getPosts();
-//    }
-
     @Override
     public void ProfilePictureUpdated(Boolean success) {
         Log.d(TAG, "ProfilePictureUpdated: Ja ik luister naar je!");
@@ -125,10 +121,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void PostDownloaded() {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.findFragmentById(R.id.content);
-        TimelineFragment frag = (TimelineFragment) fragmentManager.findFragmentById(R.id.content);
-        frag.startList();
+        Fragment frag = fragmentManager.findFragmentById(R.id.content);
 
+        if (frag instanceof TimelineFragment) {
+            ((TimelineFragment) frag).startList();
+        }
     }
 
     @Override
