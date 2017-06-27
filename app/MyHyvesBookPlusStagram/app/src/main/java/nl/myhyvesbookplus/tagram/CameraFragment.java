@@ -153,6 +153,8 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         (view.findViewById(R.id.upload_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                view.findViewById(R.id.comment_box).setClickable(true);
+                view.findViewById(R.id.comment_box).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.comment_box).bringToFront();
             }
         });
