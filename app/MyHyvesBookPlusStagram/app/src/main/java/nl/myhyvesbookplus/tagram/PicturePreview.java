@@ -28,6 +28,7 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
     public PicturePreview(Context context, Bitmap bmp) {
         super(context);
         picture = Bitmap.createScaledBitmap(bmp, 1920, 1440, false);
+//        picture = Bitmap.createBitmap(bmp);
         setWillNotDraw(false);
     }
 
@@ -41,17 +42,26 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         switch (currentFilter) {
             case FILTER_NONE:
                 canvas.drawBitmap(picture, 0, 0, null);
+                canvas.rotate(90);
                 filterPicture = picture;
                 break;
             case FILTER_SEPIA:
                 canvas.drawBitmap(toSepia(picture), 0, 0, null);
+                canvas.rotate(90);
                 filterPicture = toSepia(picture);
                 break;
             case FILTER_BW:
+                Canvas bw = new Canvas();
+                filterPicture = Bitmap.createBitmap(1920, 1440, null);
+//                filterPicture = Bitmap.createBitmap(picture.getWidth(), picture.getHeight(), null);
                 cm.setSaturation(0);
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
+                bw.setBitmap(filterPicture);
+                bw.drawBitmap(picture, 0, 0, paint);
+                bw.rotate(90);
                 canvas.drawBitmap(picture, 0, 0, paint);
+                canvas.rotate(90);
                 break;
         }
     }
@@ -85,7 +95,7 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     public Bitmap toSepia(Bitmap color) {
-        int red, green, blue, pixel, gry;
+        int red, green, blue, pixel;
         int height = color.getHeight();
         int width = color.getWidth();
         int depth = 20;
