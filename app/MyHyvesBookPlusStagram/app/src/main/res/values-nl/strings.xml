@@ -30,6 +30,7 @@
     <string name="image_save_error">Foto opslaan mislukt. Zorg a.u.b. dat er genoeg ruimte op uw telefoon beschikbaar is.</string>
     <string name="update_profile_pic_error">Het updaten van de profielfoto is mislukt. Controleer uw internetverbinding.</string>
     <string name="upload_profile_pic">Profielfoto aan het uploaden…</string>
+    <string name="mail_success">An e-mail was sent, please follow its instructions.</string>
     <string name="niet_slecht">Niet Slecht.</string>
     <string name="comment">Bijschrift:</string>
     <string name="cancel">Annuleer</string>

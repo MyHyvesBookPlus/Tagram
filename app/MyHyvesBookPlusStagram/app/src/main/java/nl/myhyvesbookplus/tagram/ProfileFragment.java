@@ -9,12 +9,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
+import nl.myhyvesbookplus.tagram.controller.DownloadClass;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,6 +47,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected ImageView profilePicture;
     protected FirebaseUser user;
     protected File photoFile = null;
+    private ListView listView;
+    private DownloadClass downloadClass;
 
     ProgressDialog progressDialog;
 
@@ -55,7 +60,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
-    }
+     }
 
     /**
      * Assigns all views and buttons.
@@ -81,8 +86,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        findViews(view);
+        View viewTimeline = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
+
+
+
+        listView = (ListView) viewTimeline.findViewById(R.id.listview_profile);
+        View viewHeader = inflater.inflate(R.layout.fragment_profile_header, listView, false);
+        findViews(viewHeader);
+        listView.addHeaderView(viewHeader);
 
         if (user != null) {
             if(user.getPhotoUrl() != null) {
@@ -100,7 +111,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         profilePicture.invalidate();
 
-        return view;
+        downloadClass = new DownloadClass(getActivity());
+        downloadClass.getPostsFromServer();
+
+        return viewTimeline;
     }
 
     /**
@@ -131,7 +145,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Toast.makeText(getActivity(), getString(R.string.image_save_error), Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(), getString(R.string.image_save_error), Toast.LENGTH_LONG).show();
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
@@ -142,6 +156,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+    public void startList() {
+        ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getmList());
+            listView.setAdapter(adapter);
+     }
 
     /**
      * Grabs the image just taken by the built-in camera and pushes this image to the user account.
@@ -154,21 +173,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), getString(R.string.upload_profile_pic), false, false);
             ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
-            profilePictureUploader.uploadProfilePicture(photoFile.getAbsoluteFile());
+            profilePictureUploader.uploadProfilePicture(photoFile);
         }
     }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String imageFileName = "JPEG_" + user.getUid();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-    }
+            return File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        }
 
 
 
@@ -183,8 +201,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getActivity(), task.isSuccessful()
-                                            ? "An e-mail was sent, please follow its instructions."
-                                            : "An error occurred, please check internet connection.",
+                                            ? getString(R.string.mail_successful)
+                                            : getString(R.string.mail_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
