@@ -45,9 +45,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected TextView profileName;
     protected ImageView profilePicture;
     protected FirebaseUser user;
-    protected File photoFile = null;
+    protected File photoFile;
     private ListView listView;
     private DownloadClass downloadClass;
+    private View headerInflater;
+    private View timeLineInflater;
+
     ProgressDialog progressDialog;
 
     /// Required empty public constructor ///
@@ -58,17 +61,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        photoFile = null;
      }
 
     /**
-     * Assigns all views and buttons.
+     * Assigns all views and buttons for the header.
      */
-    protected void findViews(View view) {
-        profilePicButton = (ImageButton) view.findViewById(R.id.profile_pic_button);
-        profilePicture = (ImageView) view.findViewById(R.id.imageView_profile_picture);
-        profileName = (TextView) view.findViewById(R.id.profile_name);
-        changePwdButton = (Button) view.findViewById(R.id.change_psw_button);
+    protected void findHeaderViews() {
+        profilePicButton = (ImageButton) headerInflater.findViewById(R.id.profile_pic_button);
+        profilePicture = (ImageView) headerInflater.findViewById(R.id.imageView_profile_picture);
+        profileName = (TextView) headerInflater.findViewById(R.id.profile_name);
+        changePwdButton = (Button) headerInflater.findViewById(R.id.change_psw_button);
         bindOnClick();
+    }
+
+    protected void findTimelineViews() {
+        listView = (ListView) timeLineInflater.findViewById(R.id.list);
+        listView.addHeaderView(headerInflater);
     }
 
     /**
@@ -84,11 +93,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View viewTimeline = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
-        listView = (ListView) viewTimeline.findViewById(R.id.list);
-        View viewHeader = inflater.inflate(R.layout.fragment_profile_header, listView, false);
-        findViews(viewHeader);
-        listView.addHeaderView(viewHeader);
+
+        timeLineInflater = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
+        headerInflater = inflater.inflate(R.layout.fragment_profile_header, listView, false);
+        findHeaderViews();
+        findTimelineViews();
 
         profilePicture.invalidate();
 
@@ -106,11 +115,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
 
-
-
-        downloadClass = new DownloadClass(getActivity(), "profile");
+        downloadClass = new DownloadClass(getActivity());
         downloadClass.getPostsFromServer();
-        return viewTimeline;
+        return timeLineInflater;
     }
 
     /**

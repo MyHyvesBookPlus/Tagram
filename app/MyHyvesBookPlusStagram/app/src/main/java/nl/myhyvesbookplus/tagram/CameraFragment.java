@@ -149,6 +149,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.comment_box).bringToFront();
                 view.findViewById(R.id.filter_buttons).setVisibility(View.GONE);
                 ((FloatingActionButton)view.findViewById(R.id.upload_button)).hide();
+                hideKeyboard();
             }
         });
 
@@ -179,6 +180,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.switch_camera_button).bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+                hideKeyboard();
             }
         });
 
@@ -203,6 +205,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.switch_camera_button).bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+                hideKeyboard();
             }
         });
 
@@ -242,21 +245,15 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
             }
         });
 
-        (view.findViewById(R.id.comment_text)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
         return view;
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    /**
+     * Hides keyboard after submit, upload or cancel button gets pressed.
+     */
+    public void hideKeyboard() {
+        ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

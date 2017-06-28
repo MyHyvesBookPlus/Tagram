@@ -24,9 +24,8 @@ public class DownloadClass {
     private DatabaseReference mDataRef;
     private ArrayList<UriPost> mList;
     private PostDownloadListener mListener;
-    private String fragmentName;
 
-    public DownloadClass(Context context, String fragmentName) {
+    public DownloadClass(Context context) {
         if (context instanceof DownloadClass.PostDownloadListener) {
             mListener = (PostDownloadListener) context;
         } else {
@@ -35,7 +34,6 @@ public class DownloadClass {
         }
         mDataRef = FirebaseDatabase.getInstance().getReference();
         mList = new ArrayList<>();
-        this.fragmentName = fragmentName;
     }
 
     public void getPostsFromServer() {

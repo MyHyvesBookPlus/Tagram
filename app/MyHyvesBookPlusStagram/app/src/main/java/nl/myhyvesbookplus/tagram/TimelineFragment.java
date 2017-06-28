@@ -32,13 +32,13 @@ public class TimelineFragment extends Fragment {
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
 
         swipeView.setEnabled(false);
-        downloadClass = new DownloadClass(getActivity(), "timeline");
+        downloadClass = new DownloadClass(getActivity());
         downloadClass.getPostsFromServer();
 
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                downloadClass = new DownloadClass(getActivity(), "timeline");
+                downloadClass = new DownloadClass(getActivity());
                 downloadClass.getPostsFromServer();
                 swipeView.setRefreshing(true);
                 ( new Handler()).postDelayed(new Runnable() {
