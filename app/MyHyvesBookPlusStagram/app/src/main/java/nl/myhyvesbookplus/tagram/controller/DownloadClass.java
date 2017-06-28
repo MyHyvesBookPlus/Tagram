@@ -24,8 +24,9 @@ public class DownloadClass {
     private DatabaseReference mDataRef;
     private ArrayList<UriPost> mList;
     private PostDownloadListener mListener;
+    private String fragmentName;
 
-    public DownloadClass(Context context) {
+    public DownloadClass(Context context, String fragmentName) {
         if (context instanceof DownloadClass.PostDownloadListener) {
             mListener = (PostDownloadListener) context;
         } else {
@@ -34,6 +35,7 @@ public class DownloadClass {
         }
         mDataRef = FirebaseDatabase.getInstance().getReference();
         mList = new ArrayList<>();
+        this.fragmentName = fragmentName;
     }
 
     public void getPostsFromServer() {
@@ -46,6 +48,7 @@ public class DownloadClass {
                         mList.add(data.getValue(UriPost.class));
                 }
                 Collections.reverse(mList);
+
                 mListener.PostDownloaded();
             }
 
@@ -62,13 +65,14 @@ public class DownloadClass {
 
     public ArrayList<UriPost> getOwnPosts() {
         String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ArrayList<UriPost> posts = new ArrayList<UriPost>();
+        ArrayList<UriPost> posts = new ArrayList<>();
 
         for (UriPost post : mList) {
             if (post.getPoster().equals(currentUid)) {
                 posts.add(post);
             }
         }
+
         return posts;
     }
 

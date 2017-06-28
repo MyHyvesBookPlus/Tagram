@@ -6,9 +6,8 @@
     tools:context="nl.myhyvesbookplus.tagram.TimelineFragment">
 
     <ListView
-        android:id="@+id/listview_profile"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-
 </LinearLayout>

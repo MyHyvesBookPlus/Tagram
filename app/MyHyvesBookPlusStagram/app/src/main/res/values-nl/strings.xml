@@ -23,7 +23,7 @@
     <string name="login_error">Voer alstublieft email en wachtwoord in</string>
     <string name="mail_failed">Er is een fout opgetreden. Controleer internetverbinding.</string>
     <string name="mail_successful">Er is een e-mail verzonden. Volg a.u.b. de instructies.</string>
-    <string name="password_match_error">Wachtwoorden komen niet overeen</string>
+    <string name="password_match_error">Wachtwoorden komoen niet overeen</string>
     <string name="register_error">Vul alstublieft alle velden in</string>
     <string name="save">Opslaan</string>
     <string name="upload">Uploaden</string>

@@ -9,13 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="15dp" />
 
-    <!--
     <TextView
         android:id="@+id/username_timeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
-    -->
 
     <ImageView
         android:id="@+id/timeline_image"

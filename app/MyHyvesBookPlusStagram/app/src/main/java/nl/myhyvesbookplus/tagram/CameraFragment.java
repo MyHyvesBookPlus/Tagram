@@ -161,7 +161,10 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mComment.setText("");
 
                 PostUploader upload = new PostUploader(getActivity());
-                upload.uploadPicture(new BitmapPost(((PicturePreview)view.findViewById(R.id.pic_preview)).getPicture(), comment));
+                if (R.id.pic_preview == 0) {
+                    upload.uploadPicture(new BitmapPost(((PicturePreview)view.findViewById(R.id.pic_preview)).getPicture(), comment));
+
+                }
 
                 mPhoto.recycle();
 

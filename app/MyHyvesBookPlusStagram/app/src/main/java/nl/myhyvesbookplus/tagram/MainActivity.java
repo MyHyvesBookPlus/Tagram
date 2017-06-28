@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements
     public void PostDownloaded() {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frag = fragmentManager.findFragmentById(R.id.content);
-        Log.d(TAG, "PostDownloaded: " + R.id.content);
 
         if (frag instanceof ProfileFragment) {
             ((ProfileFragment) frag).startList();

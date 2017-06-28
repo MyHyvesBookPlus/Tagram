@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected File photoFile = null;
     private ListView listView;
     private DownloadClass downloadClass;
-
     ProgressDialog progressDialog;
 
     /// Required empty public constructor ///
@@ -87,13 +85,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View viewTimeline = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
-
-
-
-        listView = (ListView) viewTimeline.findViewById(R.id.listview_profile);
+        listView = (ListView) viewTimeline.findViewById(R.id.list);
         View viewHeader = inflater.inflate(R.layout.fragment_profile_header, listView, false);
         findViews(viewHeader);
         listView.addHeaderView(viewHeader);
+
+        profilePicture.invalidate();
 
         if (user != null) {
             if(user.getPhotoUrl() != null) {
@@ -109,11 +106,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
         }
 
-        profilePicture.invalidate();
 
-        downloadClass = new DownloadClass(getActivity());
+
+        downloadClass = new DownloadClass(getActivity(), "profile");
         downloadClass.getPostsFromServer();
-
         return viewTimeline;
     }
 
@@ -158,8 +154,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     public void startList() {
-        ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getmList());
-            listView.setAdapter(adapter);
+        ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getOwnPosts());
+        listView.setAdapter(adapter);
      }
 
     /**

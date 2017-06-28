@@ -58,7 +58,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline, parent, false);
 
-//        TextView userName = (TextView) rowView.findViewById(R.id.username_timeline);
+        TextView userName = (TextView) rowView.findViewById(R.id.username_timeline);
         TextView comment = (TextView) rowView.findViewById(R.id.comment_timeline);
         TextView nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count);
         ImageView photo = (ImageView) rowView.findViewById(R.id.timeline_image);
@@ -73,7 +73,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
 
         UriPost post = (UriPost) getItem(position);
 
-//        userName.setText();
+        userName.setText(post.getPoster());
         nietSlechts.setText(Integer.toString(post.getNietSlechts()));
         comment.setText(post.getComment());
 
