@@ -146,7 +146,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Toast.makeText(getActivity(), getString(R.string.image_save_error), Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(), getString(R.string.image_save_error), Toast.LENGTH_LONG).show();
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
@@ -213,8 +213,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getActivity(), task.isSuccessful()
-                                            ? "An e-mail was sent, please follow its instructions."
-                                            : "An error occurred, please check internet connection.",
+                                            ? getString(R.string.mail_successful)
+                                            : getString(R.string.mail_failed),
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
