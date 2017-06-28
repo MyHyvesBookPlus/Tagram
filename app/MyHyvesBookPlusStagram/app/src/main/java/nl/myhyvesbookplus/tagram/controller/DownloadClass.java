@@ -3,6 +3,7 @@ package nl.myhyvesbookplus.tagram.controller;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,6 @@ public class DownloadClass {
     }
 
     public void getPostsFromServer() {
-        Log.d(TAG, "getPostsFromServer: Begin of function");
         mDataRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -56,6 +56,18 @@ public class DownloadClass {
 
     public ArrayList<UriPost> getmList() {
         return mList;
+    }
+
+    public ArrayList<UriPost> getOwnPosts() {
+        String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ArrayList<UriPost> posts = new ArrayList<UriPost>();
+
+        for (UriPost post : mList) {
+            if (post.getPoster().equals(currentUid)) {
+                posts.add(post);
+            }
+        }
+        return posts;
     }
 
     public interface PostDownloadListener {
