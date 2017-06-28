@@ -9,6 +9,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,14 +27,24 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     private static int currentFilter = FILTER_NONE;
 
+    int facing;
+    int rotate;
     Bitmap picture;
     Bitmap filterPicture;
 
-    public PicturePreview(Context context, Bitmap bmp) {
+    public PicturePreview(Context context, Bitmap bmp, int facing) {
         super(context);
         setWillNotDraw(false);
 
-        picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
+        this.facing = facing;
+
+        if (((Integer)facing).equals(Camera.CameraInfo.CAMERA_FACING_FRONT)) {
+            picture = Bitmap.createBitmap(bmp);
+            rotate = 270;
+        } else {
+            picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
+            rotate = 90;
+        }
         Log.d(TAG, "PicturePreview: " + bmp.getWidth() + " " + bmp.getHeight());
     }
 
@@ -47,8 +58,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
         switch (currentFilter) {
             case FILTER_NONE:
-                canvas.drawBitmap(rotate(picture, 90), 0, 0, null);
-                filterPicture = rotate(picture, 90);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, null);
+                filterPicture = rotate(picture, rotate);
                 break;
             case FILTER_SEPIA:
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
@@ -62,8 +73,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
-                saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
-                canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
             case FILTER_BW:
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
@@ -73,8 +84,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
                 saveCanvas.setBitmap(filterPicture);
-                saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
-                canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
             case FILTER_NEG:
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
@@ -88,8 +99,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
                 saveCanvas.setBitmap(filterPicture);
-                saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
-                canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
 
         }

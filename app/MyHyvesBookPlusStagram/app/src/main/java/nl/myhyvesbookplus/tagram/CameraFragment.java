@@ -127,7 +127,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                     public void onPictureTaken(byte[] data, Camera camera) {
                         mPhoto = BitmapFactory.decodeByteArray(data, 0, data.length, null);
 
-                        PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                        PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto, facing);
                         mPicPreview.setId(R.id.pic_preview);
 
                         mCameraLayout.addView(mPicPreview);
@@ -213,7 +213,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
                 PicturePreview.filterPrev();
 
-                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto, facing);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
@@ -231,7 +231,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
                 PicturePreview.filterNext();
 
-                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
+                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto, facing);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
