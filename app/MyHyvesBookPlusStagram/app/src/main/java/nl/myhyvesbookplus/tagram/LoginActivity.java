@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param passwordString the entered password
      */
     protected void logIn(String emailString, String passwordString) {
-        progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), "Logging in", true, false);
+        progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), getString(R.string.logging_in), true, false);
 
         mAuth.signInWithEmailAndPassword(emailString, passwordString)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * @param password the entered password
      */
     protected void registerUser(String email, String password) {
-        this.progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), "Registering", true, false);
+        this.progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.please_wait), getString(R.string.registering), true, false);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

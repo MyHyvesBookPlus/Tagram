@@ -37,8 +37,9 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_TAKE_PHOTO = 1;
+    ProgressDialog progressDialog;
 
-    /// Views, buttons and other protected declarations ///
+    /* Views, buttons and other protected and private inits */
     protected Button changePwdButton;
     protected ImageButton profilePicButton;
     protected StorageReference httpsReference;
@@ -46,17 +47,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     protected ImageView profilePicture;
     protected FirebaseUser user;
     protected File photoFile;
+
     private ListView listView;
     private DownloadClass downloadClass;
     private View headerInflater;
     private View timeLineInflater;
 
-    ProgressDialog progressDialog;
-
-    /// Required empty public constructor ///
-
+    /* Required empty public constructor */
     public ProfileFragment() {}
 
+    /**
+     * Overridden onCreate which initializes a user and sets the default photoFile to null.
+     * @param savedInstanceState The standard return of the onCreate method.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         bindOnClick();
     }
 
+    /**
+     * Assign the ListView and add the header to it.
+     */
     protected void findTimelineViews() {
         listView = (ListView) timeLineInflater.findViewById(R.id.list);
         listView.addHeaderView(headerInflater);
@@ -88,8 +94,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         changePwdButton.setOnClickListener(this);
     }
 
-    /// Page setup ///
-
+    /**
+     * Overridden onCreateView which serves as a fragment content creator.
+     * Checks for user data to be displayed.
+     *
+     * @param inflater The inflater used for the fragment.
+     * @param container The container which holds this fragment.
+     * @param savedInstanceState The state which was provided by onCreate.
+     * @return the timeLineInflater View which is required for the ListView to be updated.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,11 +136,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     /**
      * Called when a view has been clicked.
      *
-     * @param v The view that was clicked.
+     * @param view The view that was clicked.
      */
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.profile_pic_button:
                 profilePicOnClick();
                 break;
@@ -142,13 +155,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      */
     private void profilePicOnClick() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        /* Ensure that there's a camera activity to handle the intent */
+
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            /* Create the File where the photo should go */
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                Toast.makeText(getActivity(), getString(R.string.image_save_error), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), getString(R.string.image_save_error),
+                                Toast.LENGTH_LONG).show();
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
@@ -160,6 +173,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Start display of the list; uses an adapter and listener in the main activity.
+     */
     public void startList() {
         ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getOwnPosts());
         listView.setAdapter(adapter);
@@ -167,6 +183,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Grabs the image just taken by the built-in camera and pushes this image to the user account.
+     *
      * @param requestCode The code which corresponds to REQUEST_TAKE_PHOTO. Used as indicator.
      * @param resultCode Code should be RESULT_OK to allow camera to proceed.
      * @param data The image data from the camera.
@@ -180,8 +197,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Create the file which the camera requires to save a proper quality picture to.
+     *
+     * @return The new file.
+     * @throws IOException when insufficient permission or storage available.
+     */
     private File createImageFile() throws IOException {
-        // Create an image file name
         String imageFileName = "JPEG_" + user.getUid();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             return File.createTempFile(
@@ -191,9 +213,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             );
         }
 
-
-
-    // TODO Make this function into its own class for modularity.
     /**
      * Performs password reset action.
      */
@@ -209,8 +228,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
-        } else {
-            // TODO Add code here for when there is no currently active user.
         }
     }
 }

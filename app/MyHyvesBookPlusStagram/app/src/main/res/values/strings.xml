@@ -6,7 +6,6 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="confirm_password_hint">confirm password</string>
     <string name="login_button">Login</string>
     <string name="register">Register</string>
     <string name="back_to_login">back to Login</string>
@@ -14,8 +13,6 @@
     <string name="login_error">Please fill in email and password</string>
     <string name="password_match_error">Passwords do not match</string>
     <string name="register_error">Please fill in all the fields</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_camera">Hello Camera</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="logout_button">Logout</string>
     <string name="profile_picture_button">Change Profile Picture</string>
@@ -33,5 +30,8 @@
     <string name="comment">Comment:</string>
     <string name="cancel">Cancel</string>
     <string name="comment_placeholder">Hello, I am a comment!</string>
-    <string name="mail_success">Er is een e-mail verzonden. Volg a.u.b. de instructies.</string>
+    <string name="refreshing">Refreshing…</string>
+    <string name="downloading_posts">Downloading posts…</string>
+    <string name="registering">Registering</string>
+    <string name="logging_in">Logging in</string>
 </resources>

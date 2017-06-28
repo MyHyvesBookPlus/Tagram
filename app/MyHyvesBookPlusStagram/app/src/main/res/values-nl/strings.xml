@@ -11,15 +11,12 @@
     <string name="title_home">Tijdlijn</string>
     <string name="title_notifications">Profiel</string>
     <string name="username">Gebruikersnaam</string>
-    <string name="confirm_password_hint">bevestig wachtwoord</string>
     <string name="logo_text">MyHyvesBookPlusTagram logo</string>
     <string name="logout_button">Uitloggen</string>
     <string name="profile_picture_button">Wijzig Profiel Foto</string>
     <string name="profile_picture_description">profiel foto</string>
     <string name="change_psw_button">Wachtwoord wijzigen</string>
     <string name="please_wait">Momentje</string>
-    <string name="hello_blank_fragment">Hallo leeg fragment</string>
-    <string name="hello_camera">Hallo Camera fragment</string>
     <string name="login_error">Voer alstublieft email en wachtwoord in</string>
     <string name="mail_failed">Er is een fout opgetreden. Controleer internetverbinding.</string>
     <string name="mail_successful">Er is een e-mail verzonden. Volg a.u.b. de instructies.</string>
@@ -30,9 +27,12 @@
     <string name="image_save_error">Foto opslaan mislukt. Zorg a.u.b. dat er genoeg ruimte op uw telefoon beschikbaar is.</string>
     <string name="update_profile_pic_error">Het updaten van de profielfoto is mislukt. Controleer uw internetverbinding.</string>
     <string name="upload_profile_pic">Profielfoto aan het uploaden…</string>
-    <string name="mail_success">An e-mail was sent, please follow its instructions.</string>
     <string name="niet_slecht">Niet Slecht.</string>
     <string name="comment">Bijschrift:</string>
     <string name="cancel">Annuleer</string>
     <string name="comment_placeholder">Hallo Ik ben een comment!</string>
+    <string name="refreshing">Verversen…</string>
+    <string name="downloading_posts">Posts worden gedownload…</string>
+    <string name="logging_in">Aan het inloggen</string>
+    <string name="registering">Aan het registreren</string>
 </resources>

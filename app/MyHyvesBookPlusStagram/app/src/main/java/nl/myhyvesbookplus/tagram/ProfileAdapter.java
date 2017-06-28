@@ -70,7 +70,7 @@ public class ProfileAdapter extends BaseAdapter {
         return newRowView;
     }
 
-    protected View findViews(View rowView) {
+    private View findViews(View rowView) {
         comment = (TextView) rowView.findViewById(R.id.comment_timeline_profile);
         nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count_profile);
         photo = (ImageView) rowView.findViewById(R.id.timeline_image_profile);
