@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -55,10 +58,11 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline, parent, false);
 
+//        TextView userName = (TextView) rowView.findViewById(R.id.username_timeline);
         TextView comment = (TextView) rowView.findViewById(R.id.comment_timeline);
         TextView nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count);
         ImageView photo = (ImageView) rowView.findViewById(R.id.timeline_image);
-        ImageButton nietSlechtButton = (ImageButton) rowView.findViewById(R.id.niet_slecht_button);
+        Button nietSlechtButton = (Button) rowView.findViewById(R.id.niet_slecht_button);
 
         nietSlechtButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +73,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
 
         UriPost post = (UriPost) getItem(position);
 
+//        userName.setText();
         nietSlechts.setText(Integer.toString(post.getNietSlechts()));
         comment.setText(post.getComment());
 
