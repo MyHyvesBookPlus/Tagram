@@ -60,8 +60,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        loadPersonalPosts();
-    }
+     }
 
     /**
      * Assigns all views and buttons.
@@ -160,14 +159,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     public void startList() {
         ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getmList());
-        if (listView != null) {
             listView.setAdapter(adapter);
-        } else {
-            Log.d("Jemoeder", "startList: Halloooooooo");
-        }
-            
-//        listView.addHeaderView(adapter);
-    }
+     }
 
     /**
      * Grabs the image just taken by the built-in camera and pushes this image to the user account.
@@ -180,25 +173,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), getString(R.string.upload_profile_pic), false, false);
             ProfilePictureUploader profilePictureUploader = new ProfilePictureUploader(getActivity());
-            profilePictureUploader.uploadProfilePicture(photoFile.getAbsoluteFile());
+            profilePictureUploader.uploadProfilePicture(photoFile);
         }
     }
-
-    public void loadPersonalPosts() {
-
-    }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String imageFileName = "JPEG_" + user.getUid();
         File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-    }
+            return File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        }
 
 
 
