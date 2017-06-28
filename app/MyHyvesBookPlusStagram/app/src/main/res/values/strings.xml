@@ -32,4 +32,6 @@
     <string name="upload_profile_pic">Uploading profile picture…</string>
     <string name="comment">Comment:</string>
     <string name="cancel">Cancel</string>
+    <string name="comment_placeholder">Hello, I am a comment!</string>
+    <string name="mail_success">Er is een e-mail verzonden. Volg a.u.b. de instructies.</string>
 </resources>

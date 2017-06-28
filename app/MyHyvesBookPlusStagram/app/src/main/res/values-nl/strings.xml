@@ -34,4 +34,5 @@
     <string name="niet_slecht">Niet Slecht.</string>
     <string name="comment">Bijschrift:</string>
     <string name="cancel">Annuleer</string>
+    <string name="comment_placeholder">Hallo Ik ben een comment!</string>
 </resources>
