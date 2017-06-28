@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import nl.myhyvesbookplus.tagram.controller.PostUploader;
@@ -89,12 +91,8 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
         mCamera = getCameraInstance(facing);
-        Camera.Parameters params = mCamera.getParameters();
-        params.setRotation(0);
-        mCamera.setParameters(params);
 
         mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-        final RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
         final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
         final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
 
@@ -103,7 +101,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         // Draw buttons over preview
         view.findViewById(R.id.picture_button).bringToFront();
         view.findViewById(R.id.switch_camera_button).bringToFront();
-        pictureButtons.bringToFront();
         filterButtons.bringToFront();
 
         (view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
@@ -150,6 +147,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.comment_box).setClickable(true);
                 view.findViewById(R.id.comment_box).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.comment_box).bringToFront();
+                view.findViewById(R.id.filter_buttons).setVisibility(View.GONE);
                 ((FloatingActionButton)view.findViewById(R.id.upload_button)).hide();
             }
         });
@@ -173,9 +171,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mCameraLayout.removeView(mPreview);
 
                 mCamera = getCameraInstance(facing);
-                Camera.Parameters params = mCamera.getParameters();
-                params.setRotation(90);
-                mCamera.setParameters(params);
 
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
@@ -184,7 +179,30 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.switch_camera_button).bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+            }
+        });
 
+        (view.findViewById(R.id.comment_cancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((EditText) view.findViewById(R.id.comment_text)).setText("");
+
+                mPhoto.recycle();
+
+                filterButtons.setVisibility(View.GONE);
+                switchButtons(view);
+
+                mCameraLayout.removeView(mPreview);
+
+                mCamera = getCameraInstance(facing);
+
+                mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
+                mCameraLayout.addView(mPreview);
+
+                view.findViewById(R.id.picture_button).bringToFront();
+                view.findViewById(R.id.switch_camera_button).bringToFront();
+
+                mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
             }
         });
 
@@ -200,7 +218,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
                 mCameraLayout.addView(mPicPreview);
 
-                view.findViewById(R.id.picture_taken_buttons).bringToFront();
+                view.findViewById(R.id.upload_button).bringToFront();
                 filterButtons.setVisibility(View.VISIBLE);
                 filterButtons.bringToFront();
             }
@@ -218,7 +236,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
                 mCameraLayout.addView(mPicPreview);
 
-                view.findViewById(R.id.picture_taken_buttons).bringToFront();
+                view.findViewById(R.id.upload_button).bringToFront();
                 filterButtons.setVisibility(View.VISIBLE);
                 filterButtons.bringToFront();
             }
@@ -294,20 +312,26 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     }
 
     public void switchButtons(View view) {
-        RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.upload_button);
+        ImageButton picButton = (ImageButton) view.findViewById(R.id.picture_button);
+        ImageButton switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
 
-        if (((Integer)upload.getVisibility()).equals(View.VISIBLE)) {
+        if (((Integer)picButton.getVisibility()).equals(View.GONE)) {
+            Log.d(TAG, "switchButtons: GONE");
             upload.hide();
 
-            view.findViewById(R.id.picture_button).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.switch_camera_button).setVisibility(View.VISIBLE);
+            picButton.setVisibility(View.VISIBLE);
+            switchButton.setVisibility(View.VISIBLE);
+
+            picButton.bringToFront();
+            switchButton.bringToFront();
         } else {
-            pictureButtons.bringToFront();
+            Log.d(TAG, "switchButtons: VISIBLE");
+            upload.bringToFront();
             upload.show();
 
-            view.findViewById(R.id.picture_button).setVisibility(View.GONE);
-            view.findViewById(R.id.switch_camera_button).setVisibility(View.GONE);
+            picButton.setVisibility(View.GONE);
+            switchButton.setVisibility(View.GONE);
         }
     }
 

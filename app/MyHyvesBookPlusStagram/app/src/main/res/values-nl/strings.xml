@@ -32,4 +32,5 @@
     <string name="upload_profile_pic">Profielfoto aan het uploaden…</string>
     <string name="niet_slecht">"\"Niet slecht.\"s "</string>
     <string name="comment">Bijschrift:</string>
+    <string name="cancel">Annuleer</string>
 </resources>

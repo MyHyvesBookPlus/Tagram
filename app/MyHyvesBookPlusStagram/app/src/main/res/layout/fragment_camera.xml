@@ -18,20 +18,23 @@
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:layout_margin="10dp"
-            android:padding="10dp"
+            android:padding="15dp"
             android:scaleType="center"
-            android:scaleX="2"
-            android:scaleY="2"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            android:scaleX="2.5"
+            android:scaleY="2.5"
+            android:src="@drawable/ic_camera_black_24dp"/>
 
         <ImageButton
             android:id="@+id/switch_camera_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:padding="10dp"
             android:layout_margin="9dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
             android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_revert" />
+            android:src="@drawable/ic_switch_camera_black_24dp"/>
 
         <ProgressBar
             android:id="@+id/load_bar"
@@ -54,8 +57,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:padding="10dp"
+                android:layout_margin="10dp"
                 android:layout_alignParentLeft="true"
                 android:src="@drawable/ic_arrow_back_black_24dp"/>
 
@@ -64,8 +69,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:padding="10dp"
+                android:layout_margin="10dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_arrow_forward_black_24dp"/>
         </RelativeLayout>
@@ -94,45 +101,40 @@
                 android:layout_margin="4dp"
                 android:padding="5dp"
                 android:background="@android:color/darker_gray"/>
-            <Button
-                android:id="@+id/comment_submit"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/upload"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/comment_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/upload"/>
+
+                <Button
+                    android:id="@+id/comment_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"/>
+            </LinearLayout>
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/picture_taken_buttons"
-            android:layout_width="match_parent"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/upload_button"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/upload_button"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:scaleType="center"
-                app:fabSize="normal"
-                android:src="@android:drawable/ic_menu_upload"/>
-
-            <!--<android.support.design.widget.FloatingActionButton
-                android:id="@+id/save_button"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:scaleType="center"
-                app:fabSize="normal"
-                android:src="@android:drawable/ic_menu_save"/>-->
-        </RelativeLayout>
+            android:layout_centerHorizontal="true"
+            android:scaleType="center"
+            android:layout_margin="15dp"
+            app:fabSize="normal"
+            android:src="@android:drawable/ic_menu_upload"/>
 
     </RelativeLayout>
 
