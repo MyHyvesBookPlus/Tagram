@@ -26,36 +26,20 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     private static int currentFilter = FILTER_NONE;
 
-    private BitmapFactory.Options options = new BitmapFactory.Options();
-    private int imageHeight;
-    private int imageWidth;
-
     Bitmap picture;
     Bitmap filterPicture;
-    byte[] data;
 
     public PicturePreview(Context context, Bitmap bmp) {
-//    public PicturePreview(Context context, byte[] data) {
         super(context);
         setWillNotDraw(false);
 
-//        this.data = data;
-//        options.inJustDecodeBounds = true;
-        picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 4, bmp.getHeight() / 4, false);
-//        picture = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//        imageHeight = options.outHeight;
-//        imageWidth = options.outWidth;
+        picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
+        Log.d(TAG, "PicturePreview: " + bmp.getWidth() + " " + bmp.getHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        options.inSampleSize = 4; //calculateInSampleSize(options, canvas.getWidth(), canvas.getHeight());
-//        options.inJustDecodeBounds = false;
-//        picture = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//        picture = Bitmap.createBitmap(bmp);
-//        bmp.recycle();
-
         ColorMatrix cm = new ColorMatrix();
         Paint paint = new Paint();
         ColorMatrixColorFilter filter;
@@ -63,12 +47,10 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
         switch (currentFilter) {
             case FILTER_NONE:
-//                canvas.rotate(90);
                 canvas.drawBitmap(rotate(picture, 90), 0, 0, null);
                 filterPicture = rotate(picture, 90);
                 break;
             case FILTER_SEPIA:
-//                filterPicture = Bitmap.createBitmap(picture.getWidth() / 4, picture.getHeight() / 4, Bitmap.Config.ARGB_8888);
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
                 Log.d(TAG, "onDraw: " + Integer.toString(canvas.getWidth()));
 
@@ -80,29 +62,21 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
-                saveCanvas.setBitmap(filterPicture);
-//                saveCanvas.rotate(90);
-//                canvas.rotate(90);
                 saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 break;
             case FILTER_BW:
-//                filterPicture = Bitmap.createBitmap(picture.getWidth() / 4, picture.getHeight() / 4, Bitmap.Config.ARGB_8888);
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
 
-//                filterPicture = Bitmap.createBitmap(1920, 1440, null);
                 cm.setSaturation(0);
 
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
                 saveCanvas.setBitmap(filterPicture);
-//                saveCanvas.rotate(90);
-//                canvas.rotate(90);
                 saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 break;
             case FILTER_NEG:
-//                filterPicture = Bitmap.createBitmap(picture.getWidth() / 4, picture.getHeight() / 4, Bitmap.Config.ARGB_8888);
                 filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
 
                 float[] neg = {-1f,0f,0f,0f,255f,
@@ -114,8 +88,6 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
                 saveCanvas.setBitmap(filterPicture);
-//                saveCanvas.rotate(90);
-//                canvas.rotate(90);
                 saveCanvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 canvas.drawBitmap(rotate(picture, 90), 0, 0, paint);
                 break;
@@ -164,30 +136,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mtx, true);
     }
 
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
     public Bitmap getPicture() {
+        picture.recycle();
         return filterPicture;
     }
 
@@ -201,5 +151,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d(TAG, "surfaceDestroyed: PICTURE DESTROYED");
+        picture.recycle();
+        filterPicture.recycle();
     }
 }

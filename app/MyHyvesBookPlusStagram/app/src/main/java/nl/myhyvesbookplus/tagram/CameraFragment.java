@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
@@ -46,7 +45,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
 
     private Camera mCamera;
     private CameraPreview mPreview;
-    private byte[] mPhotoRaw;
     private Bitmap mPhoto;
     private int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
@@ -99,7 +97,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         final RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
         final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
         final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
-//        final RelativeLayout mImageTaken = (RelativeLayout) view.findViewById(R.id.picture_view);
 
         mCameraLayout.addView(mPreview);
 
@@ -131,13 +128,9 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mCamera.takePicture(null, null, new PictureCallback() {
                     @Override
                     public void onPictureTaken(byte[] data, Camera camera) {
-//                        Bitmap bmp = rotate(BitmapFactory.decodeByteArray(data, 0, data.length, null), 90);
-//                        mPhoto = bmp;
                         mPhoto = BitmapFactory.decodeByteArray(data, 0, data.length, null);
-//                        mPhotoRaw = data;
 
                         PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
-//                        PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                         mPicPreview.setId(R.id.pic_preview);
 
                         mCameraLayout.addView(mPicPreview);
@@ -145,7 +138,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                         filterButtons.setVisibility(View.VISIBLE);
                         filterButtons.bringToFront();
 
-//                        mPicPreview.invalidate();
                         switchButtons(view);
                     }
                 });
@@ -158,6 +150,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 view.findViewById(R.id.comment_box).setClickable(true);
                 view.findViewById(R.id.comment_box).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.comment_box).bringToFront();
+                ((FloatingActionButton)view.findViewById(R.id.upload_button)).hide();
             }
         });
 
@@ -173,7 +166,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 upload.uploadPicture(new BitmapPost(((PicturePreview)view.findViewById(R.id.pic_preview)).getPicture(), comment));
 
                 mPhoto.recycle();
-//                mPhoto = null;
 
                 filterButtons.setVisibility(View.GONE);
                 switchButtons(view);
@@ -204,7 +196,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 PicturePreview.filterPrev();
 
                 PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
-//                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
@@ -223,7 +214,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 PicturePreview.filterNext();
 
                 PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhoto);
-//                PicturePreview mPicPreview = new PicturePreview(getActivity().getBaseContext(), mPhotoRaw);
                 mPicPreview.setId(R.id.pic_preview);
 
                 mCameraLayout.addView(mPicPreview);
@@ -279,18 +269,11 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     public void onDestroyView() {
         super.onDestroyView();
 
-        int padding = 16;  // 6 dps
+        int padding = 16;
         float scale = getResources().getDisplayMetrics().density;
         int dp = (int) (padding * scale + 0.5f);
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         getActivity().findViewById(R.id.content).setPadding(dp,dp,dp,dp);
-    }
-
-    public static Bitmap rotate(Bitmap bmp, int degree) {
-        Matrix mtx = new Matrix();
-        mtx.postRotate(degree);
-
-        return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mtx, true);
     }
 
     public static Camera getCameraInstance(int facing) {
@@ -313,18 +296,15 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     public void switchButtons(View view) {
         RelativeLayout pictureButtons = (RelativeLayout) view.findViewById(R.id.picture_taken_buttons);
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.upload_button);
-//        FloatingActionButton save = (FloatingActionButton) view.findViewById(R.id.save_button);
 
         if (((Integer)upload.getVisibility()).equals(View.VISIBLE)) {
             upload.hide();
-//            save.hide();
 
             view.findViewById(R.id.picture_button).setVisibility(View.VISIBLE);
             view.findViewById(R.id.switch_camera_button).setVisibility(View.VISIBLE);
         } else {
             pictureButtons.bringToFront();
             upload.show();
-//            save.show();
 
             view.findViewById(R.id.picture_button).setVisibility(View.GONE);
             view.findViewById(R.id.switch_camera_button).setVisibility(View.GONE);
