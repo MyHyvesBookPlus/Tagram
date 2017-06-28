@@ -3,6 +3,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
     <ImageView
         android:id="@+id/timeline_image_profile"
         android:layout_width="wrap_content"
@@ -10,28 +14,35 @@
         android:layout_height="250dp" />
 
     <TextView
-        android:gravity="center"
         android:id="@+id/comment_timeline_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="@string/comment_placeholder" />
+
 
     <LinearLayout
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:gravity="center"
+        <Button
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/niet_slecht" />
-
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:text="@string/niet_slecht"/>
         <TextView
             android:gravity="center"
             android:id="@+id/niet_slecht_count_profile"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="   10" />
+            android:text="   10"
+            android:textSize="20sp"
+            android:padding="10dp"/>
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
 </LinearLayout>
