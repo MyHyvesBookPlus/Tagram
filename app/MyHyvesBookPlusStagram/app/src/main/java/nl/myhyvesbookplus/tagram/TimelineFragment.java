@@ -23,7 +23,7 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
-        listView = (ListView) view.findViewById(R.id.listview);
+        listView = (ListView) view.findViewById(R.id.list);
 
         downloadClass = new DownloadClass(getActivity());
         downloadClass.getPostsFromServer();
