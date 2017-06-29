@@ -36,14 +36,6 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_switch_camera_black_24dp"/>
 
-        <ProgressBar
-            android:id="@+id/load_bar"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_centerInParent="true"/>
-
         <RelativeLayout
             android:id="@+id/filter_buttons"
             android:layout_width="match_parent"

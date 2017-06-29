@@ -1,13 +1,10 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -19,91 +16,50 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import nl.myhyvesbookplus.tagram.controller.PostUploader;
 import nl.myhyvesbookplus.tagram.model.BitmapPost;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CameraFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CameraFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CameraFragment extends Fragment implements PostUploader.PostUploadListener{
-    // TODO: Rename parameter arguments, choose names that match
     private static final String TAG = "CameraFragment";
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
     private Camera mCamera;
     private CameraPreview mPreview;
     private Bitmap mPhoto;
     private int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
-    public CameraFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CameraFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CameraFragment newInstance(String param1, String param2) {
-        CameraFragment fragment = new CameraFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    /* Required empty public constructor */
+    public CameraFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        getActivity().findViewById(R.id.content).setPadding(0,0,0,0);
-
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
+        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
+        final LinearLayout commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        final ImageButton pictureButton = (ImageButton) view.findViewById(R.id.picture_button);
+        final ImageButton switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
+
+        // Hide the action bar
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         mCamera = getCameraInstance(facing);
 
         mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
-        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
 
         mCameraLayout.addView(mPreview);
 
-        // Draw buttons over preview
-        view.findViewById(R.id.picture_button).bringToFront();
-        view.findViewById(R.id.switch_camera_button).bringToFront();
+        // Draw initial buttons over preview
+        pictureButton.bringToFront();
+        switchButton.bringToFront();
         filterButtons.bringToFront();
 
-        (view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
+        /* Upon pressing the switch camera facing button: */
+        switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchFacing();
@@ -114,12 +70,13 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
             }
         });
 
-        (view.findViewById(R.id.picture_button)).setOnClickListener(new View.OnClickListener() {
+         /* Upon pressing the take photo button: */
+        pictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCamera.takePicture(null, null, new PictureCallback() {
@@ -141,17 +98,19 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
             }
         });
 
+        /* Upon pressing the upload button: */
         (view.findViewById(R.id.upload_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.findViewById(R.id.comment_box).setClickable(true);
-                view.findViewById(R.id.comment_box).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.comment_box).bringToFront();
-                view.findViewById(R.id.filter_buttons).setVisibility(View.GONE);
+                commentBox.setClickable(true);
+                commentBox.setVisibility(View.VISIBLE);
+                commentBox.bringToFront();
+                filterButtons.setVisibility(View.GONE);
                 ((FloatingActionButton)view.findViewById(R.id.upload_button)).hide();
             }
         });
 
+        /* Upon pressing the enter button on the virtual keyboard: */
         (view.findViewById(R.id.comment_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,13 +134,15 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+                hideKeyboard();
             }
         });
 
+        /* Upon pressing the cancel button: */
         (view.findViewById(R.id.comment_cancel)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,13 +160,15 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
+                hideKeyboard();
             }
         });
 
+        /* Upon pressing the left arrow filter change button: */
         (view.findViewById(R.id.filter_left)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,6 +187,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
             }
         });
 
+        /* Upon pressing the right arrow filter change button: */
         (view.findViewById(R.id.filter_right)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,58 +206,31 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
             }
         });
 
-        (view.findViewById(R.id.comment_text)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-
         return view;
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    /**
+     * Hides keyboard after submit, upload or cancel button gets pressed.
+     */
+    public void hideKeyboard() {
+        ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
+    /**
+     * Restores the action bar when exiting the fragment.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        int padding = 16;
-        float scale = getResources().getDisplayMetrics().density;
-        int dp = (int) (padding * scale + 0.5f);
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        getActivity().findViewById(R.id.content).setPadding(dp,dp,dp,dp);
     }
 
+    /**
+     * Start the camera.
+     * @param facing The direction in which the camera should be initialized (back by default).
+     * @return the result of the opened camera, if successful.
+     */
     public static Camera getCameraInstance(int facing) {
         Camera c = null;
         try {
@@ -304,13 +241,27 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         return c;
     }
 
+
+    /**
+     * Switch between front facing camera and the back camera.
+     */
     public void switchFacing() {
         if (facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
             facing = Camera.CameraInfo.CAMERA_FACING_BACK;
         else
             facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
+// TODO
+//       facing =
+//          facing == Camera.CameraInfo.CAMERA_FACING_FRONT ?
+//          Camera.CameraInfo.CAMERA_FACING_BACK :
+//          Camera.CameraInfo.CAMERA_FACING_FRONT;
     }
 
+    /**
+     * Change which buttons are visible during the different stages on the camera fragment.
+     *
+     * @param view The current view upon which the buttons need to be placed or removed.
+     */
     public void switchButtons(View view) {
         FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.upload_button);
         ImageButton picButton = (ImageButton) view.findViewById(R.id.picture_button);
@@ -336,33 +287,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void PostUploadComplete(Boolean success) {
 
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
 }

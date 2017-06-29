@@ -20,9 +20,10 @@ import nl.myhyvesbookplus.tagram.controller.PostUploader;
 import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 public class MainActivity extends AppCompatActivity implements
-        CameraFragment.OnFragmentInteractionListener,
         ProfilePictureUploader.ProfilePictureUpdatedListener,
-        DownloadClass.PostDownloadListener, PostUploader.PostUploadListener {
+        DownloadClass.PostDownloadListener,
+        PostUploader.PostUploadListener {
+
     final static private String TAG = "MainScreen";
 
     FirebaseAuth mAuth;
@@ -89,11 +90,6 @@ public class MainActivity extends AppCompatActivity implements
         finish();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
     public void logOutOnClick(View view) {
         FirebaseAuth.getInstance().signOut();
         goToLogin();
@@ -107,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void ProfilePictureUpdated(Boolean success) {
-        Log.d(TAG, "ProfilePictureUpdated: Ja ik luister naar je!");
         FragmentManager man = getFragmentManager();
         ProfileFragment frag = (ProfileFragment) man.findFragmentById(R.id.content);
         FragmentTransaction transaction = man.beginTransaction();
@@ -122,11 +117,13 @@ public class MainActivity extends AppCompatActivity implements
     public void PostDownloaded() {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frag = fragmentManager.findFragmentById(R.id.content);
-        Log.d(TAG, "PostDownloaded: " + R.id.content);
+
+
 
         if (frag instanceof ProfileFragment) {
             ((ProfileFragment) frag).startList();
         } else if (frag instanceof  TimelineFragment) {
+//            ((TimelineFragment) frag).progressDialog.dismiss();
             ((TimelineFragment) frag).startList();
         }
     }

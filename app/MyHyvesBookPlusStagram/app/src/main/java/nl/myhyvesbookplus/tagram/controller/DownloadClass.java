@@ -47,6 +47,7 @@ public class DownloadClass {
                     mList.add(tempPost);
                 }
                 Collections.reverse(mList);
+
                 mListener.PostDownloaded();
             }
 
@@ -63,13 +64,14 @@ public class DownloadClass {
 
     public ArrayList<UriPost> getOwnPosts() {
         String currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ArrayList<UriPost> posts = new ArrayList<UriPost>();
+        ArrayList<UriPost> posts = new ArrayList<>();
 
         for (UriPost post : mList) {
             if (post.getPoster().equals(currentUid)) {
                 posts.add(post);
             }
         }
+
         return posts;
     }
 
