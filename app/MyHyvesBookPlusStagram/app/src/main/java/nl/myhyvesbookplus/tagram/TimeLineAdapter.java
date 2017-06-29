@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -33,11 +34,13 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     private LayoutInflater mInflater;
     private Context mContext;
     private ArrayList<UriPost> mData;
+    private DatabaseReference mRef;
 
     TimeLineAdapter(Context context, ArrayList<UriPost> data) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = data;
+        mRef = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -74,7 +77,8 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: " + position);
-                FirebaseDatabase.getInstance().getReference().child("posts").child(post.getDatabaseEntryName()).child("nietSlechts").setValue(post.getNietSlechts() + 1)
+                mRef.child("posts").child(post.getDatabaseEntryName())
+                        .child("nietSlechts").setValue(post.getNietSlechts() + 1)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -83,6 +87,8 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
                         });
             }
         });
+
+        dateTime.setText(post.getDate().toString());
 
         StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(post.getUri());
         Glide.with(mContext)
