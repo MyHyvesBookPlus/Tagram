@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private DownloadClass downloadClass;
     private View headerInflater;
     private View timeLineInflater;
+    private ProgressBar progressBar;
 
     /* Required empty public constructor */
     public ProfileFragment() {}
@@ -109,6 +111,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         timeLineInflater = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
         headerInflater = inflater.inflate(R.layout.fragment_profile_header, listView, false);
+        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
+        progressBar.setVisibility(View.VISIBLE);
         findHeaderViews();
         findTimelineViews();
 
@@ -179,6 +183,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void startList() {
         ProfileAdapter adapter = new ProfileAdapter(getActivity(), downloadClass.getOwnPosts());
         listView.setAdapter(adapter);
+        progressBar.setVisibility(View.GONE);
      }
 
     /**
