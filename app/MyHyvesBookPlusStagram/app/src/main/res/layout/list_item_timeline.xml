@@ -4,6 +4,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp" />
+
+    <!--
+    <TextView
+        android:id="@+id/username_timeline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    -->
+
     <ImageView
         android:id="@+id/timeline_image"
         android:layout_width="wrap_content"
@@ -12,8 +24,9 @@
 
     <TextView
         android:id="@+id/comment_timeline"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="Hallo Ik ben een comment!" />
 
     <TextView
@@ -24,18 +37,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
-
         <ImageButton
             android:id="@+id/niet_slecht_button"
             android:layout_width="200dp"
             android:layout_height="match_parent" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/niet_slecht" />
-
         <TextView
             android:id="@+id/niet_slecht_count"
             android:layout_width="wrap_content"
@@ -43,4 +53,8 @@
             android:gravity="center"
             android:text="10" />
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 </LinearLayout>

@@ -8,16 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+<<<<<<< HEAD
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+=======
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+>>>>>>> origin/master
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -62,6 +68,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline, parent, false);
 
+//        TextView userName = (TextView) rowView.findViewById(R.id.username_timeline);
         TextView comment = (TextView) rowView.findViewById(R.id.comment_timeline);
         final TextView nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count);
         TextView dateTime = (TextView) rowView.findViewById(R.id.timeline_date);

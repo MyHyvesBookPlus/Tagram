@@ -2,11 +2,14 @@ package nl.myhyvesbookplus.tagram;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,20 +19,33 @@ import android.view.SurfaceView;
  */
 
 public class PicturePreview extends SurfaceView implements SurfaceHolder.Callback {
+    private static final String TAG = "PicturePreveiew";
     private static final int FILTER_NONE = 0;
     private static final int FILTER_SEPIA = 1;
     private static final int FILTER_BW = 2;
+    private static final int FILTER_NEG = 3;
 
     private static int currentFilter = FILTER_NONE;
 
+    int facing;
+    int rotate;
     Bitmap picture;
     Bitmap filterPicture;
 
-    public PicturePreview(Context context, Bitmap bmp) {
+    public PicturePreview(Context context, Bitmap bmp, int facing) {
         super(context);
-        picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
-//        picture = Bitmap.createBitmap(bmp);
         setWillNotDraw(false);
+
+        this.facing = facing;
+
+        if (((Integer)facing).equals(Camera.CameraInfo.CAMERA_FACING_FRONT)) {
+            picture = Bitmap.createBitmap(bmp);
+            rotate = 270;
+        } else {
+            picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
+            rotate = 90;
+        }
+        Log.d(TAG, "PicturePreview: " + bmp.getWidth() + " " + bmp.getHeight());
     }
 
     @Override
@@ -38,44 +54,71 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         ColorMatrix cm = new ColorMatrix();
         Paint paint = new Paint();
         ColorMatrixColorFilter filter;
+        Canvas saveCanvas = new Canvas();
 
         switch (currentFilter) {
             case FILTER_NONE:
-                canvas.drawBitmap(picture, 0, 0, null);
-                canvas.rotate(90);
-                filterPicture = picture;
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, null);
+                filterPicture = rotate(picture, rotate);
                 break;
             case FILTER_SEPIA:
-                canvas.drawBitmap(toSepia(picture), 0, 0, null);
-                canvas.rotate(90);
-                filterPicture = toSepia(picture);
-                break;
-            case FILTER_BW:
-                Canvas bw = new Canvas();
-//                filterPicture = Bitmap.createBitmap(1920, 1440, null);
-                filterPicture = Bitmap.createBitmap(picture.getWidth() / 2, picture.getHeight() / 2, Bitmap.Config.ARGB_8888);
-                cm.setSaturation(0);
+                filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+                Log.d(TAG, "onDraw: " + Integer.toString(canvas.getWidth()));
+
+                float[] sepia = {0.393f,0.769f,0.189f,0f,0f,
+                                 0.349f,0.686f,0.168f,0f,0f,
+                                 0.272f,0.534f,0.131f,0f,0f,
+                                 0f, 0f, 0f, 1f, 0f};
+                cm.set(sepia);
+
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
-                bw.setBitmap(filterPicture);
-                bw.drawBitmap(picture, 0, 0, paint);
-                bw.rotate(90);
-                canvas.drawBitmap(picture, 0, 0, paint);
-                canvas.rotate(90);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
+            case FILTER_BW:
+                filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+
+                cm.setSaturation(0);
+
+                filter = new ColorMatrixColorFilter(cm);
+                paint.setColorFilter(filter);
+                saveCanvas.setBitmap(filterPicture);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                break;
+            case FILTER_NEG:
+                filterPicture = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+
+                float[] neg = {-1f,0f,0f,0f,255f,
+                                0f,-1f,0f,0f,255f,
+                                0f,0f,-1f,0f,255f,
+                                0f,0f,0f,1f,0f};
+                cm.set(neg);
+
+                filter = new ColorMatrixColorFilter(cm);
+                paint.setColorFilter(filter);
+                saveCanvas.setBitmap(filterPicture);
+                saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
+                break;
+
         }
     }
 
     public static void filterPrev() {
         switch (currentFilter) {
             case FILTER_NONE:
-                currentFilter = FILTER_BW;
+                currentFilter = FILTER_NEG;
                 break;
             case FILTER_SEPIA:
                 currentFilter = FILTER_NONE;
                 break;
             case FILTER_BW:
                 currentFilter = FILTER_SEPIA;
+                break;
+            case FILTER_NEG:
+                currentFilter = FILTER_BW;
                 break;
         }
     }
@@ -89,44 +132,23 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 currentFilter = FILTER_BW;
                 break;
             case FILTER_BW:
+                currentFilter = FILTER_NEG;
+                break;
+            case FILTER_NEG:
                 currentFilter = FILTER_NONE;
                 break;
         }
     }
 
-    public Bitmap toSepia(Bitmap color) {
-        int red, green, blue, pixel;
-        int height = color.getHeight();
-        int width = color.getWidth();
-        int depth = 20;
+    public static Bitmap rotate(Bitmap bmp, int degree) {
+        Matrix mtx = new Matrix();
+        mtx.postRotate(degree);
 
-        Bitmap sepia = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        int[] pixels = new int[width * height];
-        color.getPixels(pixels, 0, width, 0, 0, width, height);
-        for (int i = 0; i < pixels.length; i++) {
-            pixel = pixels[i];
-
-            red = (pixel >> 16) & 0xFF;
-            green = (pixel >> 8) & 0xFF;
-            blue = pixel & 0xFF;
-
-            red = green = blue = (red + green + blue) / 3;
-
-            red += (depth * 2);
-            green += depth;
-
-            if (red > 255)
-                red = 255;
-            if (green > 255)
-                green = 255;
-            pixels[i] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
-        }
-        sepia.setPixels(pixels, 0, width, 0, 0, width, height);
-        return sepia;
+        return Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), mtx, true);
     }
 
     public Bitmap getPicture() {
+        picture.recycle();
         return filterPicture;
     }
 
@@ -140,5 +162,8 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.d(TAG, "surfaceDestroyed: PICTURE DESTROYED");
+        picture.recycle();
+        filterPicture.recycle();
     }
 }

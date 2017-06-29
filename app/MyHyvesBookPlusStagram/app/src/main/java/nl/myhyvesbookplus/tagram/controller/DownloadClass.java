@@ -40,6 +40,7 @@ public class DownloadClass {
         mDataRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     UriPost tempPost = data.getValue(UriPost.class);
                     tempPost.setDatabaseEntryName(data.getKey());

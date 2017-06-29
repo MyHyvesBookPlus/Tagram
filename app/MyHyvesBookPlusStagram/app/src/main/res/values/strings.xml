@@ -29,5 +29,7 @@
     <string name="mail_failed">An error occurred. Please check internet connection.</string>
     <string name="image_save_error">Saving image to storage failed. Please make sure there is space available on the device.</string>
     <string name="update_profile_pic_error">Updating the profile picture failed. Please check network connection.</string>
-    <string name="upload_profile_pic">Uploading profile picture...</string>
+    <string name="upload_profile_pic">Uploading profile picture…</string>
+    <string name="comment">Comment:</string>
+    <string name="cancel">Cancel</string>
 </resources>
