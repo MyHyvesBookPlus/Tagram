@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
         if (frag instanceof ProfileFragment) {
             ((ProfileFragment) frag).startList();
         } else if (frag instanceof  TimelineFragment) {
-            ((TimelineFragment) frag).progressDialog.dismiss();
+//            ((TimelineFragment) frag).progressDialog.dismiss();
             ((TimelineFragment) frag).startList();
         }
     }

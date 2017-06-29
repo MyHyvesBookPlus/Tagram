@@ -39,10 +39,10 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        getActivity().findViewById(R.id.content).setPadding(0,0,0,0);
-
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        // Hide the action bar
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         mCamera = getCameraInstance(facing);
 
@@ -217,16 +217,13 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 .toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
 
-    //TODO Niet helemaal zeker wat dit doet.
+    /**
+     * Restores the action bar when exiting the fragment.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        int padding = 16;
-        float scale = getResources().getDisplayMetrics().density;
-        int dp = (int) (padding * scale + 0.5f);
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        getActivity().findViewById(R.id.content).setPadding(dp,dp,dp,dp);
     }
 
     /**

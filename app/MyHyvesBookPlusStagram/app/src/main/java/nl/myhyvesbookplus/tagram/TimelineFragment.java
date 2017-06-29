@@ -5,11 +5,13 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import nl.myhyvesbookplus.tagram.controller.DownloadClass;
@@ -21,6 +23,7 @@ public class TimelineFragment extends Fragment {
     private ListView listView;
     private DownloadClass downloadClass;
     ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     /* Required empty public constructor */
     public TimelineFragment() {}
@@ -32,7 +35,7 @@ public class TimelineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), getString(R.string.downloading_posts), false, false);
+//        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), getString(R.string.downloading_posts), false, false);
     }
 
     /**
@@ -50,6 +53,13 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View timeLineInflater = inflater.inflate(R.layout.fragment_timeline, container, false);
+
+//        progressBar = new ProgressBar(getActivity());
+        Log.d("TIMELINEFRAGMENT", "onCreateView: PROGRESSBAR");
+        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.bringToFront();
+
         listView = (ListView) timeLineInflater.findViewById(R.id.list);
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) timeLineInflater.findViewById(R.id.swipe);
 
@@ -83,6 +93,7 @@ public class TimelineFragment extends Fragment {
                 swipeView.setEnabled(firstVisibleItem == 0);
             }
         });
+        progressBar.setVisibility(View.GONE);
         return timeLineInflater;
     }
 
