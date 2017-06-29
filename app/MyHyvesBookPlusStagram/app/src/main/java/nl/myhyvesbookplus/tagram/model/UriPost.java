@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class UriPost extends Post {
     private String uri;
+    private String databaseEntryName;
 
     public UriPost() {
         // Default constructor required for calls to DataSnapshot.getValue(UriPost.class)
@@ -32,5 +33,13 @@ public class UriPost extends Post {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public String getDatabaseEntryName() {
+        return databaseEntryName;
+    }
+
+    public void setDatabaseEntryName(String databaseEntryName) {
+        this.databaseEntryName = databaseEntryName;
     }
 }
