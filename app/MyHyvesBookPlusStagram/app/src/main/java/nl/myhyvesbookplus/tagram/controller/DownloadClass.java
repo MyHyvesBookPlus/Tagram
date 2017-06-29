@@ -42,8 +42,9 @@ public class DownloadClass {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                        mList.add(data.getValue(UriPost.class));
+                    UriPost tempPost = data.getValue(UriPost.class);
+                    tempPost.setDatabaseEntryName(data.getKey());
+                    mList.add(tempPost);
                 }
                 Collections.reverse(mList);
                 mListener.PostDownloaded();
