@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -39,7 +38,6 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_TAKE_PHOTO = 1;
     ProgressDialog progressDialog;
-    ProgressBar progressBar;
 
     /* Views, buttons and other protected and private inits */
     protected Button changePwdButton;
@@ -233,3 +231,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 }
+
+
