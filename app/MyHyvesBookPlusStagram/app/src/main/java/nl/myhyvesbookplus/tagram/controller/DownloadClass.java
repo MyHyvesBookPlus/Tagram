@@ -33,10 +33,11 @@ public class DownloadClass {
                     + " must implement PostDownloadListener");
         }
         mDataRef = FirebaseDatabase.getInstance().getReference();
-        mList = new ArrayList<>();
     }
 
     public void getPostsFromServer() {
+        mList = new ArrayList<>();
+
         mDataRef.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
