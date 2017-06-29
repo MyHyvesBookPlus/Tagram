@@ -36,6 +36,11 @@ import nl.myhyvesbookplus.tagram.controller.ProfilePictureUploader;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Profilefragment which holds the personal info of the user.
+ * Makes use of ProfileAdapter in order to load in the items for ListView.
+ */
+
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_TAKE_PHOTO = 1;
     ProgressDialog progressDialog;

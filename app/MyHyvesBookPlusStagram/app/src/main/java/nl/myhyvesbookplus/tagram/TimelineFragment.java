@@ -1,7 +1,6 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;

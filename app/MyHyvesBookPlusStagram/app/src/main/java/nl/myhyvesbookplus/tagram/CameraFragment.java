@@ -246,15 +246,9 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
      * Switch between front facing camera and the back camera.
      */
     public void switchFacing() {
-        if (facing == Camera.CameraInfo.CAMERA_FACING_FRONT)
-            facing = Camera.CameraInfo.CAMERA_FACING_BACK;
-        else
-            facing = Camera.CameraInfo.CAMERA_FACING_FRONT;
-// TODO
-//       facing =
-//          facing == Camera.CameraInfo.CAMERA_FACING_FRONT ?
-//          Camera.CameraInfo.CAMERA_FACING_BACK :
-//          Camera.CameraInfo.CAMERA_FACING_FRONT;
+       facing = facing == Camera.CameraInfo.CAMERA_FACING_FRONT ?
+       Camera.CameraInfo.CAMERA_FACING_BACK :
+       Camera.CameraInfo.CAMERA_FACING_FRONT;
     }
 
     /**
