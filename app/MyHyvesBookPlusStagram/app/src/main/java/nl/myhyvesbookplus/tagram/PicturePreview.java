@@ -73,6 +73,7 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
+                saveCanvas.setBitmap(filterPicture);
                 saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
