@@ -1,6 +1,7 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,11 +27,13 @@ public class TimelineFragment extends Fragment {
     public TimelineFragment() {}
 
     /**
+     * Overridden onCreate which also starts a progress dialog for the posts being downloaded.
      * @param savedInstanceState The standard return of the onCreate method.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        progressDialog = ProgressDialog.show(getActivity(), getString(R.string.please_wait), getString(R.string.downloading_posts), false, false);
     }
 
     /**
@@ -48,11 +51,11 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View timeLineInflater = inflater.inflate(R.layout.fragment_timeline, container, false);
-        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
-        progressBar.setVisibility(View.VISIBLE);
-
         listView = (ListView) timeLineInflater.findViewById(R.id.list);
         final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) timeLineInflater.findViewById(R.id.swipe);
+
+        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
+        progressBar.setVisibility(View.VISIBLE);
 
         swipeView.setEnabled(false);
         downloadClass = new DownloadClass(getActivity());
