@@ -1,13 +1,10 @@
 package nl.myhyvesbookplus.tagram;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import nl.myhyvesbookplus.tagram.controller.PostUploader;
@@ -31,9 +29,8 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
     private Bitmap mPhoto;
     private int facing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
-    public CameraFragment() {
-        // Required empty public constructor
-    }
+    /* Required empty public constructor */
+    public CameraFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,24 +38,28 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
+        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
+        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
+        final LinearLayout commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
+        final ImageButton pictureButton = (ImageButton) view.findViewById(R.id.picture_button);
+        final ImageButton switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
+
         // Hide the action bar
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         mCamera = getCameraInstance(facing);
 
         mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
-        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
 
         mCameraLayout.addView(mPreview);
 
         // Draw initial buttons over preview
-        view.findViewById(R.id.picture_button).bringToFront();
-        view.findViewById(R.id.switch_camera_button).bringToFront();
+        pictureButton.bringToFront();
+        switchButton.bringToFront();
         filterButtons.bringToFront();
 
         /* Upon pressing the switch camera facing button: */
-        (view.findViewById(R.id.switch_camera_button)).setOnClickListener(new View.OnClickListener() {
+        switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchFacing();
@@ -69,13 +70,13 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
             }
         });
 
          /* Upon pressing the take photo button: */
-        (view.findViewById(R.id.picture_button)).setOnClickListener(new View.OnClickListener() {
+        pictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCamera.takePicture(null, null, new PictureCallback() {
@@ -101,12 +102,11 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         (view.findViewById(R.id.upload_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.findViewById(R.id.comment_box).setClickable(true);
-                view.findViewById(R.id.comment_box).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.comment_box).bringToFront();
-                view.findViewById(R.id.filter_buttons).setVisibility(View.GONE);
+                commentBox.setClickable(true);
+                commentBox.setVisibility(View.VISIBLE);
+                commentBox.bringToFront();
+                filterButtons.setVisibility(View.GONE);
                 ((FloatingActionButton)view.findViewById(R.id.upload_button)).hide();
-                hideKeyboard();
             }
         });
 
@@ -134,8 +134,8 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
                 hideKeyboard();
@@ -160,8 +160,8 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
                 mPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
                 mCameraLayout.addView(mPreview);
 
-                view.findViewById(R.id.picture_button).bringToFront();
-                view.findViewById(R.id.switch_camera_button).bringToFront();
+                pictureButton.bringToFront();
+                switchButton.bringToFront();
 
                 mCameraLayout.removeView(view.findViewById(R.id.pic_preview));
                 hideKeyboard();
@@ -284,18 +284,6 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
             picButton.setVisibility(View.GONE);
             switchButton.setVisibility(View.GONE);
         }
-    }
-
-
-    //TODO: Kan dit weg? super aanroepen enzo.
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
