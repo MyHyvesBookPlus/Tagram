@@ -22,38 +22,42 @@
         android:layout_height="250dp" />
 
     <TextView
+        android:id="@+id/timeline_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="5dp"
+        android:textColor="#AAAAAA"
+        android:text="date/time" />
+
+    <TextView
         android:id="@+id/comment_timeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/comment_placeholder" />
+        android:text="Hallo Ik ben een comment!" />
 
     <LinearLayout
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/niet_slecht_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/niet_slecht"/>
-
-        <!--
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/niet_slecht" />
-            -->
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"
+            android:src="@drawable/niet_slecht"/>
 
         <TextView
             android:id="@+id/niet_slecht_count"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20dp"
-            android:padding="10dp"
+            android:textSize="20sp"
             android:text="10" />
     </LinearLayout>
 
