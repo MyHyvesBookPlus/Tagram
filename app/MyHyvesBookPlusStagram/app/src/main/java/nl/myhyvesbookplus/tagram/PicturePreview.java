@@ -15,11 +15,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
- * Created by felix on 23/06/2017.
+ * Draws the picture taken and applies filters, which can be switched.
  */
-
 public class PicturePreview extends SurfaceView implements SurfaceHolder.Callback {
-    private static final String TAG = "PicturePreveiew";
+    private static final String TAG = "PicturePreview";
     private static final int FILTER_NONE = 0;
     private static final int FILTER_SEPIA = 1;
     private static final int FILTER_BW = 2;
@@ -27,11 +26,17 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     private static int currentFilter = FILTER_NONE;
 
-    int facing;
-    int rotate;
-    Bitmap picture;
-    Bitmap filterPicture;
+    private int facing;
+    private int rotate;
+    private Bitmap picture;
+    private Bitmap filterPicture;
 
+    /**
+     * Constructor: changes image based on current direction the camera is facing.
+     * @param context
+     * @param bmp Image to be previewed.
+     * @param facing Direction camera is facing.
+     */
     public PicturePreview(Context context, Bitmap bmp, int facing) {
         super(context);
         setWillNotDraw(false);
@@ -45,9 +50,12 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
             picture = Bitmap.createScaledBitmap(bmp, bmp.getWidth() / 2, bmp.getHeight() / 2, false);
             rotate = 90;
         }
-        Log.d(TAG, "PicturePreview: " + bmp.getWidth() + " " + bmp.getHeight());
     }
 
+    /**
+     * Checks the current filter and draws and saves the image with altered colours.
+     * @param canvas
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -73,6 +81,7 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
                 filter = new ColorMatrixColorFilter(cm);
                 paint.setColorFilter(filter);
+                saveCanvas.setBitmap(filterPicture);
                 saveCanvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 canvas.drawBitmap(rotate(picture, rotate), 0, 0, paint);
                 break;
@@ -106,6 +115,9 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
+    /**
+     * Switches filter to the left.
+     */
     public static void filterPrev() {
         switch (currentFilter) {
             case FILTER_NONE:
@@ -123,6 +135,9 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
+    /**
+     * Switches filter to the right.
+     */
     public static void filterNext() {
         switch (currentFilter) {
             case FILTER_NONE:
@@ -140,6 +155,12 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
         }
     }
 
+    /**
+     * Rotates an image by a specified amount of degrees by matrix.
+     * @param bmp Image to be rotated.
+     * @param degree Amount of degrees to rotate
+     * @return Rotated image.
+     */
     public static Bitmap rotate(Bitmap bmp, int degree) {
         Matrix mtx = new Matrix();
         mtx.postRotate(degree);
@@ -160,9 +181,12 @@ public class PicturePreview extends SurfaceView implements SurfaceHolder.Callbac
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
+    /**
+     * Recycles pictures to free memory.
+     * @param holder
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.d(TAG, "surfaceDestroyed: PICTURE DESTROYED");
         picture.recycle();
         filterPicture.recycle();
     }
