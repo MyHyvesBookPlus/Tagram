@@ -8,10 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -28,12 +25,10 @@ import java.util.ArrayList;
 import nl.myhyvesbookplus.tagram.model.UriPost;
 
 /**
- * Created by niels on 27-6-17.
+ * Class which creates views for the profile-page timeline. This is done with a ListView.
  */
 
 public class ProfileAdapter extends BaseAdapter {
-
-    private static final String TAG = "ProfileAdapter";
     private LayoutInflater mInflater;
     private Context mContext;
     private ArrayList<UriPost> mData;
@@ -42,6 +37,7 @@ public class ProfileAdapter extends BaseAdapter {
     private ImageView photo;
     private Animator mCurrentAnimator;
 
+    /* ProfileAdapter constructor */
     ProfileAdapter(Context context, ArrayList<UriPost> data) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -63,6 +59,13 @@ public class ProfileAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     *  Initiate a new view to be part of the ListView.
+     * @param position The position at which the view should start.
+     * @param convertView The viewconverter.
+     * @param parent The parent of the view.
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline_profile, parent, false);
@@ -85,6 +88,11 @@ public class ProfileAdapter extends BaseAdapter {
         return newRowView;
     }
 
+    /**
+     * Find all views from within the row.
+     * @param rowView The row from which views must be found.
+     * @return The rowView which contains the necessary views.
+     */
     private View findViews(View rowView) {
         comment = (TextView) rowView.findViewById(R.id.comment_timeline_profile);
         nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count_profile);

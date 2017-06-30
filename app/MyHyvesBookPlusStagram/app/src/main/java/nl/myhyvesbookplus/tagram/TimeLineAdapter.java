@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import nl.myhyvesbookplus.tagram.model.UriPost;
 
 /**
- * Created by marijnjansen on 26/06/2017.
+ * Class which creates views for the home-page timeline. This is done with a ListView.
  */
 
 public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
@@ -44,6 +44,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     private DatabaseReference mRef;
     private Animator mCurrentAnimator;
 
+    /* TimeLineAdapter constructor */
     TimeLineAdapter(Context context, ArrayList<UriPost> data) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,11 +67,17 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
         return position;
     }
 
+    /**
+     *  Initiate a new view to be part of the ListView.
+     * @param position The position at which the view should start.
+     * @param convertView The viewconverter.
+     * @param parent The parent of the view.
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline, parent, false);
 
-        TextView userName = (TextView) rowView.findViewById(R.id.username_timeline);
         TextView comment = (TextView) rowView.findViewById(R.id.comment_timeline);
         final TextView nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count);
         TextView dateTime = (TextView) rowView.findViewById(R.id.timeline_date);
