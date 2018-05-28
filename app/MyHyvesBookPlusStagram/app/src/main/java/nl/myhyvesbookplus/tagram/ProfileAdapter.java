@@ -16,7 +16,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -73,8 +72,7 @@ public class ProfileAdapter extends BaseAdapter {
         UriPost post = (UriPost) getItem(position);
         comment.setText(post.getComment());
         final StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(post.getUri());
-        Glide.with(mContext)
-                .using(new FirebaseImageLoader())
+        GlideApp.with(mContext)
                 .load(ref)
                 .into(photo);
 
@@ -94,9 +92,9 @@ public class ProfileAdapter extends BaseAdapter {
      * @return The rowView which contains the necessary views.
      */
     private View findViews(View rowView) {
-        comment = (TextView) rowView.findViewById(R.id.comment_timeline_profile);
-        nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count_profile);
-        photo = (ImageView) rowView.findViewById(R.id.timeline_image_profile);
+        comment = rowView.findViewById(R.id.comment_timeline_profile);
+        nietSlechts = rowView.findViewById(R.id.niet_slecht_count_profile);
+        photo = rowView.findViewById(R.id.timeline_image_profile);
         return rowView;
     }
 
@@ -115,10 +113,9 @@ public class ProfileAdapter extends BaseAdapter {
         }
 
         // Load the high-resolution "zoomed-in" image.
-        final ImageView hiddenView = (ImageView) ((MainActivity) mContext).findViewById(R.id.expanded_image_profile);
+        final ImageView hiddenView = ((MainActivity) mContext).findViewById(R.id.expanded_image_profile);
 
-        Glide.with(mContext)
-                .using(new FirebaseImageLoader())
+        GlideApp.with(mContext)
                 .load(imageRef)
                 .into(hiddenView);
 

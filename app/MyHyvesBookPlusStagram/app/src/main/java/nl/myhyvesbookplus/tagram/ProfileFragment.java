@@ -78,10 +78,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Assigns all views and buttons for the header.
      */
     protected void findHeaderViews() {
-        profilePicButton = (ImageButton) headerInflater.findViewById(R.id.profile_pic_button);
-        profilePicture = (ImageView) headerInflater.findViewById(R.id.imageView_profile_picture);
-        profileName = (TextView) headerInflater.findViewById(R.id.profile_name);
-        changePwdButton = (Button) headerInflater.findViewById(R.id.change_psw_button);
+        profilePicButton = headerInflater.findViewById(R.id.profile_pic_button);
+        profilePicture = headerInflater.findViewById(R.id.imageView_profile_picture);
+        profileName = headerInflater.findViewById(R.id.profile_name);
+        changePwdButton = headerInflater.findViewById(R.id.change_psw_button);
         bindOnClick();
     }
 
@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Assign the ListView and add the header to it.
      */
     protected void findTimelineViews() {
-        listView = (ListView) timeLineInflater.findViewById(R.id.list);
+        listView = timeLineInflater.findViewById(R.id.list);
         listView.addHeaderView(headerInflater);
     }
 
@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         timeLineInflater = inflater.inflate(R.layout.fragment_profile_timeline, container, false);
         headerInflater = inflater.inflate(R.layout.fragment_profile_header, listView, false);
-        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
+        progressBar = timeLineInflater.findViewById(R.id.progressbar_timeline);
         progressBar.setVisibility(View.VISIBLE);
         findHeaderViews();
         findTimelineViews();
@@ -134,7 +134,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
 
         if (httpsReference != null) {
-            Glide.with(this).using(new FirebaseImageLoader()).load(httpsReference).into(profilePicture);
+            GlideApp.with(this)
+                    .load(httpsReference)
+                    .into(profilePicture);
         }
 
         downloadClass = new DownloadClass(getActivity());

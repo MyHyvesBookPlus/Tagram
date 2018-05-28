@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(nl.myhyvesbookplus.tagram.R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(nl.myhyvesbookplus.tagram.R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mAuth = FirebaseAuth.getInstance();

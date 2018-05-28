@@ -40,10 +40,10 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View timeLineInflater = inflater.inflate(R.layout.fragment_timeline, container, false);
-        listView = (ListView) timeLineInflater.findViewById(R.id.list);
-        final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) timeLineInflater.findViewById(R.id.swipe);
+        listView = timeLineInflater.findViewById(R.id.list);
+        final SwipeRefreshLayout swipeView = timeLineInflater.findViewById(R.id.swipe);
 
-        progressBar = (ProgressBar) timeLineInflater.findViewById(R.id.progressbar_timeline);
+        progressBar = timeLineInflater.findViewById(R.id.progressbar_timeline);
         progressBar.setVisibility(View.VISIBLE);
 
         swipeView.setEnabled(false);

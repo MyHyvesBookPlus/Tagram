@@ -78,11 +78,11 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = mInflater.inflate(R.layout.list_item_timeline, parent, false);
 
-        TextView comment = (TextView) rowView.findViewById(R.id.comment_timeline);
-        final TextView nietSlechts = (TextView) rowView.findViewById(R.id.niet_slecht_count);
-        TextView dateTime = (TextView) rowView.findViewById(R.id.timeline_date);
-        final ImageView photo = (ImageView) rowView.findViewById(R.id.timeline_image);
-        final ImageButton nietSlechtButton = (ImageButton) rowView.findViewById(R.id.niet_slecht_button);
+        TextView comment = rowView.findViewById(R.id.comment_timeline);
+        final TextView nietSlechts = rowView.findViewById(R.id.niet_slecht_count);
+        TextView dateTime = rowView.findViewById(R.id.timeline_date);
+        final ImageView photo = rowView.findViewById(R.id.timeline_image);
+        final ImageButton nietSlechtButton = rowView.findViewById(R.id.niet_slecht_button);
 
         final UriPost post = (UriPost) getItem(position);
 
@@ -107,8 +107,7 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
         dateTime.setText(post.getDate().toString());
 
         final StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(post.getUri());
-        Glide.with(mContext)
-                .using(new FirebaseImageLoader())
+        GlideApp.with(mContext)
                 .load(ref)
                 .into(photo);
 
@@ -155,10 +154,9 @@ public class TimeLineAdapter extends BaseAdapter implements AdapterView.OnItemCl
         }
 
         // Load the high-resolution "zoomed-in" image.
-        final ImageView hiddenView = (ImageView) ((MainActivity) mContext).findViewById(R.id.expanded_image);
+        final ImageView hiddenView = ((MainActivity) mContext).findViewById(R.id.expanded_image);
 
-        Glide.with(mContext)
-                .using(new FirebaseImageLoader())
+        GlideApp.with(mContext)
                 .load(imageRef)
                 .into(hiddenView);
 

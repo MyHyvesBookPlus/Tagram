@@ -38,11 +38,11 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        final RelativeLayout filterButtons = (RelativeLayout) view.findViewById(R.id.filter_buttons);
-        final RelativeLayout mCameraLayout = (RelativeLayout) view.findViewById(R.id.camera_preview);
-        final LinearLayout commentBox = (LinearLayout) view.findViewById(R.id.comment_box);
-        final ImageButton pictureButton = (ImageButton) view.findViewById(R.id.picture_button);
-        final ImageButton switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
+        final RelativeLayout filterButtons = view.findViewById(R.id.filter_buttons);
+        final RelativeLayout mCameraLayout = view.findViewById(R.id.camera_preview);
+        final LinearLayout commentBox = view.findViewById(R.id.comment_box);
+        final ImageButton pictureButton = view.findViewById(R.id.picture_button);
+        final ImageButton switchButton = view.findViewById(R.id.switch_camera_button);
 
         // Hide the action bar
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
@@ -114,7 +114,7 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
         (view.findViewById(R.id.comment_submit)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText mComment = (EditText) view.findViewById(R.id.comment_text);
+                EditText mComment = view.findViewById(R.id.comment_text);
 
                 String comment = mComment.getText().toString();
                 mComment.setText("");
@@ -257,9 +257,9 @@ public class CameraFragment extends Fragment implements PostUploader.PostUploadL
      * @param view The current view upon which the buttons need to be placed or removed.
      */
     public void switchButtons(View view) {
-        FloatingActionButton upload = (FloatingActionButton) view.findViewById(R.id.upload_button);
-        ImageButton picButton = (ImageButton) view.findViewById(R.id.picture_button);
-        ImageButton switchButton = (ImageButton) view.findViewById(R.id.switch_camera_button);
+        FloatingActionButton upload = view.findViewById(R.id.upload_button);
+        ImageButton picButton = view.findViewById(R.id.picture_button);
+        ImageButton switchButton = view.findViewById(R.id.switch_camera_button);
 
         if (((Integer)picButton.getVisibility()).equals(View.GONE)) {
             Log.d(TAG, "switchButtons: GONE");

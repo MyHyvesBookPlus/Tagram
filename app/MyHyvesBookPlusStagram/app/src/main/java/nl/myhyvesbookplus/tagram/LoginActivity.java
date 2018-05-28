@@ -48,18 +48,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Assigns all views.
      */
     protected void findViews() {
-        passwordConfirmLabel = (TextView) findViewById(R.id.confirm_password_label);
-        usernameLabel = (TextView) findViewById(R.id.username_label);
+        passwordConfirmLabel = findViewById(R.id.confirm_password_label);
+        usernameLabel = findViewById(R.id.username_label);
 
-        registerButton = (Button) findViewById(R.id.register_button);
-        backToLoginButton = (Button) findViewById(R.id.back_to_login_button);
-        goToRegisterButton = (Button) findViewById(R.id.go_to_register_button);
-        logInButton = (Button) findViewById(R.id.login_button);
+        registerButton = findViewById(R.id.register_button);
+        backToLoginButton = findViewById(R.id.back_to_login_button);
+        goToRegisterButton = findViewById(R.id.go_to_register_button);
+        logInButton = findViewById(R.id.login_button);
 
         passwordConfirmField = (EditText) findViewById(R.id.confirm_password_field);
-        usernameField = (EditText) findViewById(R.id.username);
-        passwordField = (EditText) findViewById(R.id.password);
-        emailField = (EditText) findViewById(R.id.email);
+        usernameField = findViewById(R.id.username);
+        passwordField = findViewById(R.id.password);
+        emailField = findViewById(R.id.email);
     }
 
     protected void bindOnClick() {
